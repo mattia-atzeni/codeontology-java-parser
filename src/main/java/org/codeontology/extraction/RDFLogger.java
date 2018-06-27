@@ -3,7 +3,6 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Statement;
 import org.codeontology.Ontology;
 
 import java.io.BufferedWriter;
@@ -16,7 +15,7 @@ public class RDFLogger {
     private String outputFile = "triples.nt";
     private int counter = 0;
     private static RDFLogger instance = new RDFLogger();
-    public static final int MAX_SIZE = 10000;
+    public static final int LIMIT = 100000;
 
     private RDFLogger() {
 
@@ -36,31 +35,28 @@ public class RDFLogger {
 
     public void writeRDF() {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
-            model.write(writer, "N-TRIPLE");
+            getModel().write(writer, "N-TRIPLE");
+            model = Ontology.getModel();
+            counter = 0;
         } catch (IOException e) {
-            System.out.println("Cannot write triples.");
+            System.out.println("Unable to write triples");
             System.exit(-1);
         }
     }
 
-    public void addTriple(Wrapper<?> subject, Property property, Wrapper object) {
+    public void addTriple(Wrapper subject, Property property, Wrapper object) {
         addTriple(subject, property, object.getResource());
     }
 
-    public void addTriple(Wrapper<?> subject, Property property, RDFNode object) {
+    public void addTriple(Wrapper subject, Property property, RDFNode object) {
         if (property != null && object != null) {
-            Statement triple = model.createStatement(subject.getResource(), property, object);
-            model.add(triple);
+            model.add(model.createStatement(subject.getResource(), property, object));
             counter++;
-            if (counter > MAX_SIZE) {
+            if (counter >= LIMIT) {
                 writeRDF();
-                free();
             }
+        } else {
+            throw new IllegalArgumentException();
         }
-    }
-
-    private void free() {
-        model = Ontology.getModel();
-        counter = 0;
     }
 }

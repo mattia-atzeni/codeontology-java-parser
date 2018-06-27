@@ -12,6 +12,6 @@ public class EnumWrapper<T extends Enum<?>> extends ClassWrapper<T> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.ENUM_ENTITY;
+        return Ontology.ENUM_CLASS;
     }
 }

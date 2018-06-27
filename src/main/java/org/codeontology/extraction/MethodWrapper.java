@@ -5,11 +5,11 @@ import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeReference;
+import spoon.support.reflect.reference.SpoonClassNotFoundException;
 
 import java.lang.reflect.*;
-import java.util.List;
 
-public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements GenericDeclarationWrapper<CtMethod<?>> {
+public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> {
     public MethodWrapper(CtMethod<?> method) {
         super(method);
     }
@@ -20,7 +20,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
 
     @Override
     protected RDFNode getType() {
-        return Ontology.METHOD_ENTITY;
+        return Ontology.METHOD_CLASS;
     }
 
     @Override
@@ -34,16 +34,14 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
     }
 
     public void tagOverrides() {
-        try {
-            CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference()).getOverridingExecutable();
-            if (reference != null) {
-                ExecutableWrapper overridingMethod = getFactory().wrap(reference);
-                getLogger().addTriple(this, Ontology.OVERRIDES_PROPERTY, overridingMethod);
-                overridingMethod.follow();
+        CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference()).getOverridingExecutable();
+        if (reference != null) {
+            ExecutableWrapper overridingMethod = getFactory().wrap(reference);
+            getLogger().addTriple(this, Ontology.OVERRIDES_PROPERTY, overridingMethod);
+
+            if (!overridingMethod.isDeclarationAvailable()) {
+                overridingMethod.extract();
             }
-        } catch (Exception | Error e) {
-            // could not get overriding executable
-            // we just skip this method
         }
     }
 
@@ -60,7 +58,9 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
         CtTypeReference<?> reference = ((CtExecutableReference<?>) getReference()).getType();
         returnType = getFactory().wrap(reference);
         returnType.setParent(this);
-        returnType.follow();
+        if (!returnType.isDeclarationAvailable()) {
+            returnType.extract();
+        }
 
         return returnType;
     }
@@ -70,8 +70,9 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
         if (!isDeclarationAvailable()) {
             try {
                 CtExecutableReference<?> reference = ((CtExecutableReference<?>) getReference());
-                Method method = (Method) ReflectionFactory.getInstance().createActualExecutable(reference);
+                Method method = reference.getActualMethod();
                 Type returnType = method.getGenericReturnType();
+
 
                 if (returnType instanceof GenericArrayType ||
                     returnType instanceof TypeVariable<?>  ||
@@ -80,8 +81,7 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
                     result = getFactory().wrap(returnType);
                     result.setParent(this);
                 }
-
-            } catch (Throwable t) {
+            } catch (SpoonClassNotFoundException | NullPointerException e) {
                 return null;
             }
         }
@@ -89,12 +89,6 @@ public class MethodWrapper extends ExecutableWrapper<CtMethod<?>> implements Gen
         return result;
     }
 
-    @Override
-    public List<TypeVariableWrapper> getFormalTypeParameters() {
-        return FormalTypeParametersTagger.formalTypeParametersOf(this);
-    }
-
-    @Override
     public void tagFormalTypeParameters() {
         new FormalTypeParametersTagger(this).tagFormalTypeParameters();
     }

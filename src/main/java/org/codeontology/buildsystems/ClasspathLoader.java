@@ -5,6 +5,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,12 +16,9 @@ import java.util.Set;
 public class ClasspathLoader {
 
     private static ClasspathLoader instance;
-    private Set<File> classpath;
-    private boolean locked;
 
     private ClasspathLoader() {
-        classpath = new HashSet<>();
-        locked = false;
+
     }
 
     public static ClasspathLoader getInstance() {
@@ -39,11 +37,7 @@ public class ClasspathLoader {
             loadAllJars(file);
             return;
         }
-
-        if (file.getPath().endsWith(".jar") && !locked) {
-            classpath.add(file);
-        }
-
+        
         try {
             load(file.toURI().toURL());
         } catch (MalformedURLException e) {
@@ -51,7 +45,7 @@ public class ClasspathLoader {
         }
     }
 
-    private void load(URL url) {
+    public void load(URL url) {
         URLClassLoader loader = (URLClassLoader) ClassLoader.getSystemClassLoader();
         Class<URLClassLoader> clazz = URLClassLoader.class;
         final Class[] PARAMETERS = new Class[]{URL.class};
@@ -77,7 +71,7 @@ public class ClasspathLoader {
         }
     }
 
-    public void loadAllJars(String path) {
+    public void loadAllJars(String path) throws IOException {
         loadAllJars(new File(path));
     }
 
@@ -86,18 +80,6 @@ public class ClasspathLoader {
         for (String path : paths) {
             load(path);
         }
-    }
-
-    public Set<File> getJarsLoaded() {
-        return classpath;
-    }
-
-    public void lock() {
-        locked = true;
-    }
-
-    public void release() {
-        locked = false;
     }
 }
 

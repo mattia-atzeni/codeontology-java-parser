@@ -1,2 +1,7 @@
 #! /bin/bash
+<<<<<<< HEAD
 java -cp target/codeontology-1.0-SNAPSHOT-jar-with-dependencies.jar -d64 -Xms2G -Xmx4G org.codeontology.CodeOntology $@
+=======
+rm result.nt
+java -cp target/codeontology-1.0-SNAPSHOT-jar-with-dependencies.jar -Xmx3036M spoon.Launcher -p org.codeontology.SourceProcessor $@
+>>>>>>> 03b38bb... fix null type for parameters

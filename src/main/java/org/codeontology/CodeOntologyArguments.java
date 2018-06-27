@@ -27,14 +27,6 @@ public class CodeOntologyArguments {
 
     public static final String SHUTDOWN_LONG = "shutdown";
 
-    public static final String JAR_INPUT_LONG = "jar";
-
-    public static final String EXPLORE_DEPENDENCIES_LONG = "explore-dependencies";
-
-    public static final String DO_NOT_EXTRACT_LONG = "do-not-extract";
-
-    public static final String CLEAN_LONG = "clean";
-
     private JSAP jsap;
     private JSAPResult result;
 
@@ -53,6 +45,7 @@ public class CodeOntologyArguments {
         option.setShortFlag(INPUT_SHORT);
         option.setLongFlag(INPUT_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
+        option.setRequired(true);
         option.setHelp("Path to source files.");
         jsap.registerParameter(option);
 
@@ -65,18 +58,11 @@ public class CodeOntologyArguments {
         option.setHelp("Output file name.");
         jsap.registerParameter(option);
 
-        option = new FlaggedOption(JAR_INPUT_LONG);
-        option.setLongFlag(JAR_INPUT_LONG);
-        option.setStringParser(JSAP.STRING_PARSER);
-        option.setRequired(false);
-        option.setHelp("Path to a jar input file");
-        jsap.registerParameter(option);
-
         option = new FlaggedOption(CLASSPATH_LONG);
         option.setLongFlag(CLASSPATH_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
         option.setRequired(false);
-        option.setHelp("Specifies a list of directories and JAR files separated by colons (:) to search for class files.");
+        option.setHelp("Specifies a list of directories, JAR files and classes separated by colons (:) to search for class files.");
         jsap.registerParameter(option);
 
         flag = new Switch(ND);
@@ -106,29 +92,13 @@ public class CodeOntologyArguments {
         flag.setHelp("Prints this help message.");
         jsap.registerParameter(flag);
 
-        flag = new Switch(EXPLORE_DEPENDENCIES_LONG);
-        flag.setLongFlag(EXPLORE_DEPENDENCIES_LONG);
-        flag.setDefault("false");
-        flag.setHelp("Explore jar files in classpath");
-        jsap.registerParameter(flag);
-
         flag = new Switch(SHUTDOWN_LONG);
         flag.setLongFlag(SHUTDOWN_LONG);
         flag.setDefault("false");
         flag.setHelp("Shutdown after complete");
         jsap.registerParameter(flag);
 
-        flag = new Switch(DO_NOT_EXTRACT_LONG);
-        flag.setLongFlag(DO_NOT_EXTRACT_LONG);
-        flag.setDefault("false");
-        flag.setHelp("Do not extract triples, just download dependencies");
-        jsap.registerParameter(flag);
 
-        flag = new Switch(CLEAN_LONG);
-        flag.setLongFlag(CLEAN_LONG);
-        flag.setDefault("false");
-        flag.setHelp("Remove tests if compilation fails.");
-        jsap.registerParameter(flag);
 
     }
 
@@ -178,11 +148,11 @@ public class CodeOntologyArguments {
         return result.getString(OUTPUT_LONG);
     }
 
-    public boolean downloadDependencies() {
+    public boolean getDownloadDependenciesFlag() {
         return !result.getBoolean(ND);
     }
 
-    public boolean verboseMode() {
+    public boolean getVerboseMode() {
         return result.getBoolean(VERBOSE_LONG);
     }
 
@@ -190,12 +160,8 @@ public class CodeOntologyArguments {
         return result.getBoolean(STACKTRACE_LONG);
     }
 
-    public boolean shutdownFlag() {
+    public boolean getShutdownFlag() {
         return result.getBoolean(SHUTDOWN_LONG);
-    }
-
-    public boolean doNotExtractTriples() {
-        return result.getBoolean(DO_NOT_EXTRACT_LONG);
     }
 
     private String getDefaultOutput() {
@@ -219,19 +185,7 @@ public class CodeOntologyArguments {
         return defaultName;
     }
 
-    public String getJarInput() {
-        return result.getString(JAR_INPUT_LONG);
-    }
-
-    public boolean exploreJars() {
-        return result.getBoolean(EXPLORE_DEPENDENCIES_LONG);
-    }
-
     public String getClasspath() {
         return result.getString(CLASSPATH_LONG);
-    }
-
-    public boolean removeTests() {
-        return result.getBoolean(CLEAN_LONG);
     }
 }

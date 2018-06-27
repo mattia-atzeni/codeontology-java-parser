@@ -25,17 +25,19 @@ public class ArrayWrapper extends TypeWrapper<CtType<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.ARRAY_ENTITY;
+        return Ontology.ARRAY_CLASS;
     }
 
     @Override
-    public String buildRelativeURI() {
+    public String getRelativeURI() {
         return componentType.getRelativeURI() + "[]";
     }
 
     public void tagArrayOf() {
         getLogger().addTriple(this, Ontology.ARRAY_OF_PROPERTY, componentType);
-        componentType.follow();
+        if (!componentType.isDeclarationAvailable()) {
+            componentType.extract();
+        }
     }
 
     public void tagDimensions() {

@@ -17,7 +17,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
     }
 
     @Override
-    public String buildRelativeURI() {
+    public String getRelativeURI() {
         arguments = getReference().getActualTypeArguments();
         String uri = getReference().getQualifiedName();
         String argumentsString = "";
@@ -48,7 +48,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
 
     @Override
     protected RDFNode getType() {
-        return Ontology.PARAMETERIZED_TYPE_ENTITY;
+        return Ontology.PARAMETERIZED_TYPE_CLASS;
     }
 
     public void tagRawType() {
@@ -64,13 +64,6 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
             typeArgument.setPosition(i);
             getLogger().addTriple(this, Ontology.ACTUAL_TYPE_ARGUMENT_PROPERTY, typeArgument);
             typeArgument.extract();
-        }
-    }
-
-    @Override
-    public void follow() {
-        if (WrapperRegister.getInstance().add(this))  {
-            extract();
         }
     }
 
@@ -94,7 +87,9 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
 
         private void tagJavaType() {
             getLogger().addTriple(this, Ontology.JAVA_TYPE_PROPERTY, argument);
-            argument.follow();
+            if (!argument.isDeclarationAvailable()) {
+                argument.extract();
+            }
         }
 
         private void tagPosition() {
@@ -102,13 +97,13 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         }
 
         @Override
-        public String buildRelativeURI() {
+        public String getRelativeURI() {
             return ParameterizedTypeWrapper.this.getRelativeURI() + SEPARATOR + position;
         }
 
         @Override
         protected RDFNode getType() {
-            return Ontology.TYPE_ARGUMENT_ENTITY;
+            return Ontology.TYPE_ARGUMENT_CLASS;
         }
 
         public void setPosition(int position) {

@@ -1,26 +1,15 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.declaration.CtType;
-import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeReference;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
-public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements ModifiableWrapper<CtClass<T>>, GenericDeclarationWrapper<CtClass<T>> {
-
-    private List<ConstructorWrapper> constructors;
-
-    public ClassWrapper(CtClass<T> clazz) {
-        super(clazz);
-    }
+public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
 
     public ClassWrapper(CtTypeReference<?> reference) {
         super(reference);
@@ -28,26 +17,24 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
 
     @Override
     protected RDFNode getType() {
-        return Ontology.CLASS_ENTITY;
+        return Ontology.CLASS_CLASS;
     }
 
     @Override
     public void extract() {
         tagType();
         tagName();
-        tagSuperClass();
-        tagSuperInterfaces();
-        tagModifiers();
-        if (isDeclarationAvailable() || CodeOntology.isJarExplorationEnabled()) {
+        if (isDeclarationAvailable()) {
+            tagAnnotations();
+            tagSuperClass();
+            tagSuperInterfaces();
+            tagComment();
             tagFields();
             tagConstructors();
             tagMethods();
-        }
-        if (isDeclarationAvailable()) {
-            tagAnnotations();
-            tagComment();
             tagSourceCode();
             tagNestedTypes();
+            tagModifiers();
             tagFormalTypeParameters();
         }
     }
@@ -60,7 +47,9 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
         TypeWrapper<?> superClass = getFactory().wrap(superclass);
         superClass.setParent(this);
         getLogger().addTriple(this, Ontology.EXTENDS_PROPERTY, superClass);
-        superClass.follow();
+        if (!superClass.isDeclarationAvailable()) {
+            superClass.extract();
+        }
     }
 
     public void tagSuperInterfaces() {
@@ -68,47 +57,10 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
     }
 
     public void tagConstructors() {
-        List<ConstructorWrapper> constructors = getConstructors();
+        Set<CtConstructor<T>> constructors = getElement().getConstructors();
 
-        for (ConstructorWrapper constructor : constructors) {
-            constructor.extract();
-        }
-    }
-
-    public List<ConstructorWrapper> getConstructors() {
-        if (constructors == null) {
-            setConstructors();
-        }
-
-        return constructors;
-    }
-
-    private void setConstructors() {
-        constructors = new ArrayList<>();
-
-        if (isDeclarationAvailable()) {
-            Set<CtConstructor<T>> ctConstructors = getElement().getConstructors();
-            for (CtConstructor ctConstructor : ctConstructors) {
-                ConstructorWrapper constructor = getFactory().wrap(ctConstructor);
-                constructor.setParent(this);
-                constructors.add(constructor);
-            }
-        } else {
-            setConstructorsByReflection();
-        }
-    }
-
-    private void setConstructorsByReflection() {
-        try {
-            Constructor[] actualConstructors = getReference().getActualClass().getDeclaredConstructors();
-            for (Constructor actualConstructor : actualConstructors) {
-                CtExecutableReference<?> reference = ReflectionFactory.getInstance().createConstructor(actualConstructor);
-                ConstructorWrapper constructor = (ConstructorWrapper) getFactory().wrap(reference);
-                constructor.setParent(this);
-                constructors.add(constructor);
-            }
-        } catch (Throwable t) {
-            showMemberAccessWarning();
+        for (CtConstructor<T> constructor : constructors) {
+            getFactory().wrap(constructor).extract();
         }
     }
 
@@ -116,14 +68,13 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
         Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
         for (CtType<?> type : nestedTypes) {
             Wrapper wrapper = getFactory().wrap(type);
-            getLogger().addTriple(wrapper, Ontology.NESTED_IN_PROPERTY, this);
+            getLogger().addTriple(wrapper, Ontology.IS_NESTED_IN_PROPERTY, this.getResource());
             wrapper.extract();
         }
     }
 
-    @Override
-    public List<TypeVariableWrapper> getFormalTypeParameters() {
-        return FormalTypeParametersTagger.formalTypeParametersOf(this);
+    public void tagModifiers() {
+        new ModifiableTagger(this).tagModifiers();
     }
 
     public void tagFormalTypeParameters() {

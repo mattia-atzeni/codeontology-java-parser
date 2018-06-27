@@ -1,39 +1,128 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
-import spoon.reflect.declaration.CtElement;
+import org.codeontology.Ontology;
+import spoon.reflect.declaration.CtAnnotation;
+import spoon.reflect.declaration.CtNamedElement;
 import spoon.reflect.reference.CtReference;
 
-public interface Wrapper<E extends CtElement> {
+import java.util.List;
 
-    String SEPARATOR = "-";
 
-    void setReference(CtReference reference);
+public abstract class Wrapper<E extends CtNamedElement> {
 
-    E getElement();
+    private E element;
+    private CtReference reference;
+    public static final String SEPARATOR = "-";
+    public static Model model = RDFLogger.getInstance().getModel();
+    private Wrapper<?> parent;
 
-    void extract();
+    public Wrapper(E element) {
+        setElement(element);
+    }
 
-    void setElement(E element);
+    public Wrapper(CtReference reference) {
+        setReference(reference);
+    }
 
-    Model getModel();
+    @SuppressWarnings("unchecked")
+    public void setReference(CtReference reference) {
+        if (reference == null) {
+            throw new IllegalArgumentException();
+        }
 
-    WrapperFactory getFactory();
+        this.reference = reference;
+        this.element = (E) reference.getDeclaration();
+    }
 
-    CtReference getReference();
+    public E getElement() {
+        return element;
+    }
 
-    boolean isDeclarationAvailable();
+    public void setElement(E element) {
+        if (element == null) {
+            throw new IllegalArgumentException();
+        }
+        this.element = element;
+        try {
+            this.reference = element.getReference();
+        } catch (ClassCastException e) {
+            this.reference = null;
+        }
+    }
 
-    RDFLogger getLogger();
+    public abstract void extract();
 
-    Wrapper<?> getParent();
+    protected Resource getResource() {
+        return model.createResource(Ontology.WOC + getRelativeURI());
+    }
 
-    void setParent(Wrapper<?> parent);
+    public abstract String getRelativeURI();
 
-    void follow();
+    private RDFNode getName() {
+        return model.createLiteral(getReference().getSimpleName());
+    }
 
-    String getRelativeURI();
+    public void tagType() {
+        getLogger().addTriple(this, Ontology.RDF_TYPE_PROPERTY, getType());
+    }
 
-    Resource getResource();
+    public void tagName() {
+        getLogger().addTriple(this, Ontology.NAME_PROPERTY, getName());
+    }
+
+    public void tagComment() {
+        String comment = getElement().getDocComment();
+        if (comment != null) {
+            getLogger().addTriple(this, Ontology.COMMENT_PROPERTY, model.createLiteral(comment));
+        }
+    }
+
+    public void tagAnnotations() {
+        List<CtAnnotation<?>> annotations = getElement().getAnnotations();
+        for (CtAnnotation annotation : annotations) {
+            TypeWrapper annotationType = getFactory().wrap(annotation.getAnnotationType());
+            getLogger().addTriple(this, Ontology.ANNOTATION_PROPERTY, annotationType);
+            if (!annotationType.isDeclarationAvailable()) {
+                annotationType.extract();
+            }
+        }
+    }
+
+    protected abstract RDFNode getType();
+
+    public void tagSourceCode() {
+        getLogger().addTriple(this, Ontology.SOURCE_CODE_PROPERTY, model.createLiteral(getElement().toString()));
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public WrapperFactory getFactory() {
+        return WrapperFactory.getInstance();
+    }
+
+    public CtReference getReference() {
+        return reference;
+    }
+
+    public boolean isDeclarationAvailable() {
+        return getElement() != null;
+    }
+
+    public RDFLogger getLogger() {
+        return RDFLogger.getInstance();
+    }
+
+    public Wrapper<?> getParent() {
+        return parent;
+    }
+
+    public void setParent(Wrapper<?> parent) {
+        this.parent = parent;
+    }
 }
+

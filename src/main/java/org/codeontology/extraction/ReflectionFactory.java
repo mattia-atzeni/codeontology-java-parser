@@ -1,7 +1,9 @@
 package org.codeontology.extraction;
 
 import spoon.reflect.factory.Factory;
-import spoon.reflect.reference.*;
+import spoon.reflect.reference.CtExecutableReference;
+import spoon.reflect.reference.CtTypeParameterReference;
+import spoon.reflect.reference.CtTypeReference;
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -127,54 +129,47 @@ public class ReflectionFactory {
     }
 
     public Executable createActualExecutable(CtExecutableReference<?> executableReference) {
-        Executable executable = null;
-        Class<?> declaringClass;
 
-        try {
-            executable = executableReference.getActualMethod();
+        Executable executable = executableReference.getActualMethod();
 
-            if (executable == null) {
-                executable = executableReference.getActualConstructor();
-            }
-
-            try {
-                declaringClass = executable.getDeclaringClass();
-            } catch (Exception | Error e) {
-                declaringClass = Class.forName(executableReference.getDeclaringType().getQualifiedName());
-            }
-
-        } catch (Exception | Error e) {
-            declaringClass = null;
+        if (executable == null) {
+            executable = executableReference.getActualConstructor();
         }
 
-        if (executable == null && declaringClass != null) {
-            Executable[] executables = declaringClass.getDeclaredMethods();
-            if (executableReference.isConstructor()) {
-                executables = declaringClass.getDeclaredConstructors();
-            }
+        if (executable == null) {
+            try {
+                Class<?> declaringClass = Class.forName(executableReference.getDeclaringType().getQualifiedName());
 
-            for (Executable current : executables) {
-                if (current.getName().equals(executableReference.getSimpleName()) || current instanceof Constructor) {
-                    if (current.getParameterCount() == executableReference.getParameters().size()) {
-                        List<CtTypeReference<?>> parameters = executableReference.getParameters();
-                        Class<?>[] classes = new Class<?>[parameters.size()];
-                        for (int i = 0; i < parameters.size(); i++) {
-                            classes[i] = parameters.get(i).getActualClass();
-                        }
+                Executable[] executables = declaringClass.getDeclaredMethods();
+                if (executableReference.isConstructor()) {
+                    executables = declaringClass.getDeclaredConstructors();
+                }
 
-                        boolean acc = true;
+                for (Executable current : executables) {
+                    if (current.getName().equals(executableReference.getSimpleName()) || current instanceof Constructor) {
+                        if (current.getParameterCount() == executableReference.getParameters().size()) {
+                            List<CtTypeReference<?>> parameters = executableReference.getParameters();
+                            Class<?>[] classes = new Class<?>[parameters.size()];
+                            for (int i = 0; i < parameters.size(); i++) {
+                                classes[i] = parameters.get(i).getActualClass();
+                            }
 
-                        Class<?>[] parameterTypes = current.getParameterTypes();
-                        for (int i = 0; i < classes.length && acc; i++) {
-                            acc = classes[i].isAssignableFrom(parameterTypes[i]);
-                        }
+                            boolean acc = true;
 
-                        if (acc) {
-                            executable = current;
-                            break;
+                            Class<?>[] parameterTypes = current.getParameterTypes();
+                            for (int i = 0; i < classes.length && acc; i++) {
+                                acc = classes[i].isAssignableFrom(parameterTypes[i]);
+                            }
+
+                            if (acc) {
+                                executable = current;
+                                break;
+                            }
                         }
                     }
                 }
+            } catch (ClassNotFoundException | NoSuchMethodError e) {
+                throw new RuntimeException(e);
             }
         }
 
@@ -182,23 +177,7 @@ public class ReflectionFactory {
     }
 
     public CtTypeReference<?> createTypeReference(Class<?> clazz) {
-        return getParent().Class().createReference(clazz);
-    }
-
-    public CtPackageReference createPackageReference(Package pack) {
-        return getParent().Package().createReference(pack);
-    }
-
-    public CtExecutableReference<?> createMethod(Method method) {
-        return getParent().Method().createReference(method);
-    }
-
-    public CtExecutableReference<?> createConstructor(Constructor constructor) {
-        return getParent().Constructor().createReference(constructor);
-    }
-
-    public CtFieldReference<?> createField(Field field) {
-        return getParent().Field().createReference(field);
+        return getParent().Type().createReference(clazz);
     }
 
     public void setParent(Factory parent) {

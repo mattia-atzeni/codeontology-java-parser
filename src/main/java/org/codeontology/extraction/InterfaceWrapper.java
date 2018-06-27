@@ -1,14 +1,11 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtInterface;
 import spoon.reflect.reference.CtTypeReference;
 
-import java.util.List;
-
-public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> implements GenericDeclarationWrapper<CtInterface<?>> {
+public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> {
 
     public InterfaceWrapper(CtTypeReference<?> reference) {
         super(reference);
@@ -16,24 +13,21 @@ public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> implements Gen
 
     @Override
     protected RDFNode getType() {
-        return Ontology.INTERFACE_ENTITY;
+        return Ontology.INTERFACE_CLASS;
     }
 
     @Override
     public void extract() {
         tagType();
         tagName();
-        tagSuperInterfaces();
-        tagModifiers();
-        if (isDeclarationAvailable() || CodeOntology.isJarExplorationEnabled()) {
-            tagFields();
-            tagMethods();
-        }
         if (isDeclarationAvailable()) {
             tagAnnotations();
+            tagSuperInterfaces();
+            tagFields();
+            tagMethods();
             tagSourceCode();
             tagComment();
-            tagFormalTypeParameters();
+            tagModifiers();
         }
     }
 
@@ -41,13 +35,7 @@ public class InterfaceWrapper extends TypeWrapper<CtInterface<?>> implements Gen
         tagSuperInterfaces(Ontology.EXTENDS_PROPERTY);
     }
 
-    @Override
-    public List<TypeVariableWrapper> getFormalTypeParameters() {
-        return FormalTypeParametersTagger.formalTypeParametersOf(this);
-    }
-
-    @Override
-    public void tagFormalTypeParameters() {
-        new FormalTypeParametersTagger(this).tagFormalTypeParameters();
+    public void tagModifiers() {
+        new ModifiableTagger(this).tagModifiers();
     }
 }

@@ -13,7 +13,7 @@ import spoon.reflect.reference.CtTypeReference;
 
 import java.util.List;
 
-public class ParameterWrapper extends AbstractWrapper<CtParameter<?>> implements TypedElementWrapper<CtParameter<?>> {
+public class ParameterWrapper extends Wrapper<CtParameter<?>> {
 
     private int position;
     private ExecutableWrapper parent;
@@ -45,7 +45,7 @@ public class ParameterWrapper extends AbstractWrapper<CtParameter<?>> implements
     }
 
     @Override
-    public String buildRelativeURI() {
+    public String getRelativeURI() {
         return getParent().getRelativeURI() + SEPARATOR  + position;
     }
 
@@ -67,16 +67,7 @@ public class ParameterWrapper extends AbstractWrapper<CtParameter<?>> implements
 
     @Override
     protected RDFNode getType() {
-        return Ontology.PARAMETER_ENTITY;
-    }
-
-    @Override
-    public TypeWrapper<?> getJavaType() {
-        if (isDeclarationAvailable()) {
-            return getFactory().wrap(getElement().getType());
-        } else {
-            return getFactory().wrap((CtTypeReference<?>) getReference());
-        }
+        return Ontology.PARAMETER_CLASS;
     }
 
     public void tagJavaType() {

@@ -36,7 +36,6 @@ public class DocCommentParser {
                 tags.add(tag);
             }
         }
-        scanner.close();
         parsed = true;
     }
 
@@ -55,6 +54,14 @@ public class DocCommentParser {
         }
         scanner.close();
         return "";
+    }
+
+    public List<Tag> getTags() {
+        if (!parsed) {
+            parse();
+        }
+
+        return tags;
     }
 
     public List<Tag> getTags(String name) {
