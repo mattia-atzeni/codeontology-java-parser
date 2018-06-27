@@ -1,11 +1,22 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.Property;
+<<<<<<< HEAD
 import org.codeontology.CodeOntology;
+=======
+<<<<<<< HEAD
+import org.codeontology.CodeOntology;
+=======
+>>>>>>> master
+>>>>>>> master
 import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.declaration.CtField;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtType;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtFieldReference;
 import spoon.reflect.reference.CtTypeReference;
@@ -20,6 +31,17 @@ public abstract class TypeWrapper<T extends CtType<?>> extends AbstractWrapper<T
 
     private List<MethodWrapper> methods;
     private List<FieldWrapper> fields;
+<<<<<<< HEAD
+=======
+=======
+import spoon.reflect.reference.CtTypeReference;
+
+import java.util.List;
+import java.util.Set;
+
+public abstract class TypeWrapper<T extends CtType<?>> extends Wrapper<T> {
+>>>>>>> master
+>>>>>>> master
 
     public TypeWrapper(T type) {
         super(type);
@@ -38,7 +60,15 @@ public abstract class TypeWrapper<T extends CtType<?>> extends AbstractWrapper<T
     }
 
     @Override
+<<<<<<< HEAD
     public String buildRelativeURI() {
+=======
+<<<<<<< HEAD
+    public String buildRelativeURI() {
+=======
+    public String getRelativeURI() {
+>>>>>>> master
+>>>>>>> master
         return getReference().getQualifiedName();
     }
 
@@ -53,6 +83,10 @@ public abstract class TypeWrapper<T extends CtType<?>> extends AbstractWrapper<T
             TypeWrapper<?> superInterface = getFactory().wrap(reference);
             superInterface.setParent(this);
             getLogger().addTriple(this, property, superInterface.getResource());
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
             superInterface.follow();
         }
     }
@@ -133,10 +167,31 @@ public abstract class TypeWrapper<T extends CtType<?>> extends AbstractWrapper<T
             }
         } catch (Throwable t) {
             showMemberAccessWarning();
+<<<<<<< HEAD
+=======
+=======
+
+            if (!superInterface.isDeclarationAvailable()) {
+                superInterface.extract();
+            }
+        }
+    }
+
+    public void tagMethods() {
+        Set<CtMethod<?>> methods = getElement().getMethods();
+
+        for (CtMethod<?> method : methods) {
+            getFactory().wrap(method).extract();
+>>>>>>> master
+>>>>>>> master
         }
     }
 
     public void tagFields() {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
         List<FieldWrapper> fields = getFields();
 
         for (FieldWrapper field : fields) {
@@ -160,6 +215,15 @@ public abstract class TypeWrapper<T extends CtType<?>> extends AbstractWrapper<T
     protected void showMemberAccessWarning() {
         if (CodeOntology.verboseMode()) {
             System.out.println("[WARNING] Cannot extract members of " + getReference().getQualifiedName());
+<<<<<<< HEAD
+=======
+=======
+        List<CtField<?>> fields = getElement().getFields();
+
+        for (CtField<?> field : fields) {
+            getFactory().wrap(field).extract();
+>>>>>>> master
+>>>>>>> master
         }
     }
 }

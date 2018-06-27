@@ -98,11 +98,19 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
         </dependency>
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+>>>>>>> master
         <dependency>
             <groupId>fr.inria.gforge.spoon</groupId>
             <artifactId>spoon-core</artifactId>
             <version>5.1.0</version>
         </dependency>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
@@ -113,6 +121,13 @@
             <artifactId>gradle-tooling-api</artifactId>
             <version>2.6</version>
         </dependency>
+<<<<<<< HEAD
+=======
+=======
+=======
+>>>>>>> Stashed changes
+>>>>>>> master
+>>>>>>> master
     </dependencies>
 
 </project>

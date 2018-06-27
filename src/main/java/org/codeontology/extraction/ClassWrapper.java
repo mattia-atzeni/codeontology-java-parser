@@ -1,11 +1,22 @@
 package org.codeontology.extraction;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
+<<<<<<< HEAD
 import org.codeontology.CodeOntology;
+=======
+<<<<<<< HEAD
+import org.codeontology.CodeOntology;
+=======
+>>>>>>> master
+>>>>>>> master
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.declaration.CtType;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
 import spoon.reflect.reference.CtExecutableReference;
 import spoon.reflect.reference.CtTypeReference;
 
@@ -21,6 +32,16 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
     public ClassWrapper(CtClass<T> clazz) {
         super(clazz);
     }
+<<<<<<< HEAD
+=======
+=======
+import spoon.reflect.reference.CtTypeReference;
+
+import java.util.Set;
+
+public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> {
+>>>>>>> master
+>>>>>>> master
 
     public ClassWrapper(CtTypeReference<?> reference) {
         super(reference);
@@ -28,13 +49,25 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
 
     @Override
     protected RDFNode getType() {
+<<<<<<< HEAD
         return Ontology.CLASS_ENTITY;
+=======
+<<<<<<< HEAD
+        return Ontology.CLASS_ENTITY;
+=======
+        return Ontology.CLASS_CLASS;
+>>>>>>> master
+>>>>>>> master
     }
 
     @Override
     public void extract() {
         tagType();
         tagName();
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
         tagSuperClass();
         tagSuperInterfaces();
         tagModifiers();
@@ -48,6 +81,22 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
             tagComment();
             tagSourceCode();
             tagNestedTypes();
+<<<<<<< HEAD
+=======
+=======
+        if (isDeclarationAvailable()) {
+            tagAnnotations();
+            tagSuperClass();
+            tagSuperInterfaces();
+            tagComment();
+            tagFields();
+            tagConstructors();
+            tagMethods();
+            tagSourceCode();
+            tagNestedTypes();
+            tagModifiers();
+>>>>>>> master
+>>>>>>> master
             tagFormalTypeParameters();
         }
     }
@@ -60,7 +109,17 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
         TypeWrapper<?> superClass = getFactory().wrap(superclass);
         superClass.setParent(this);
         getLogger().addTriple(this, Ontology.EXTENDS_PROPERTY, superClass);
+<<<<<<< HEAD
         superClass.follow();
+=======
+<<<<<<< HEAD
+        superClass.follow();
+=======
+        if (!superClass.isDeclarationAvailable()) {
+            superClass.extract();
+        }
+>>>>>>> master
+>>>>>>> master
     }
 
     public void tagSuperInterfaces() {
@@ -68,6 +127,10 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
     }
 
     public void tagConstructors() {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
         List<ConstructorWrapper> constructors = getConstructors();
 
         for (ConstructorWrapper constructor : constructors) {
@@ -109,6 +172,15 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
             }
         } catch (Throwable t) {
             showMemberAccessWarning();
+<<<<<<< HEAD
+=======
+=======
+        Set<CtConstructor<T>> constructors = getElement().getConstructors();
+
+        for (CtConstructor<T> constructor : constructors) {
+            getFactory().wrap(constructor).extract();
+>>>>>>> master
+>>>>>>> master
         }
     }
 
@@ -116,14 +188,33 @@ public class ClassWrapper<T> extends TypeWrapper<CtClass<T>> implements Modifiab
         Set<CtType<?>> nestedTypes = getElement().getNestedTypes();
         for (CtType<?> type : nestedTypes) {
             Wrapper wrapper = getFactory().wrap(type);
+<<<<<<< HEAD
             getLogger().addTriple(wrapper, Ontology.NESTED_IN_PROPERTY, this);
+=======
+<<<<<<< HEAD
+            getLogger().addTriple(wrapper, Ontology.NESTED_IN_PROPERTY, this);
+=======
+            getLogger().addTriple(wrapper, Ontology.IS_NESTED_IN_PROPERTY, this.getResource());
+>>>>>>> master
+>>>>>>> master
             wrapper.extract();
         }
     }
 
+<<<<<<< HEAD
     @Override
     public List<TypeVariableWrapper> getFormalTypeParameters() {
         return FormalTypeParametersTagger.formalTypeParametersOf(this);
+=======
+<<<<<<< HEAD
+    @Override
+    public List<TypeVariableWrapper> getFormalTypeParameters() {
+        return FormalTypeParametersTagger.formalTypeParametersOf(this);
+=======
+    public void tagModifiers() {
+        new ModifiableTagger(this).tagModifiers();
+>>>>>>> master
+>>>>>>> master
     }
 
     public void tagFormalTypeParameters() {

@@ -5,6 +5,13 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import java.io.File;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+import java.io.IOException;
+>>>>>>> master
+>>>>>>> master
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,12 +22,24 @@ import java.util.Set;
 public class ClasspathLoader {
 
     private static ClasspathLoader instance;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
     private Set<File> classpath;
     private boolean locked;
 
     private ClasspathLoader() {
         classpath = new HashSet<>();
         locked = false;
+<<<<<<< HEAD
+=======
+=======
+
+    private ClasspathLoader() {
+
+>>>>>>> master
+>>>>>>> master
     }
 
     public static ClasspathLoader getInstance() {
@@ -39,11 +58,21 @@ public class ClasspathLoader {
             loadAllJars(file);
             return;
         }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
 
         if (file.getPath().endsWith(".jar") && !locked) {
             classpath.add(file);
         }
 
+<<<<<<< HEAD
+=======
+=======
+        
+>>>>>>> master
+>>>>>>> master
         try {
             load(file.toURI().toURL());
         } catch (MalformedURLException e) {
@@ -51,7 +80,15 @@ public class ClasspathLoader {
         }
     }
 
+<<<<<<< HEAD
     private void load(URL url) {
+=======
+<<<<<<< HEAD
+    private void load(URL url) {
+=======
+    public void load(URL url) {
+>>>>>>> master
+>>>>>>> master
         URLClassLoader loader = (URLClassLoader) ClassLoader.getSystemClassLoader();
         Class<URLClassLoader> clazz = URLClassLoader.class;
         final Class[] PARAMETERS = new Class[]{URL.class};
@@ -77,7 +114,15 @@ public class ClasspathLoader {
         }
     }
 
+<<<<<<< HEAD
     public void loadAllJars(String path) {
+=======
+<<<<<<< HEAD
+    public void loadAllJars(String path) {
+=======
+    public void loadAllJars(String path) throws IOException {
+>>>>>>> master
+>>>>>>> master
         loadAllJars(new File(path));
     }
 
@@ -87,6 +132,10 @@ public class ClasspathLoader {
             load(path);
         }
     }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
 
     public Set<File> getJarsLoaded() {
         return classpath;
@@ -99,5 +148,10 @@ public class ClasspathLoader {
     public void release() {
         locked = false;
     }
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> master
+>>>>>>> master
 }
 
