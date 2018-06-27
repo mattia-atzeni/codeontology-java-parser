@@ -59,9 +59,19 @@ public class CodeOntology {
 
     public static void main(String[] args) {
         codeOntology = new CodeOntology(args);
+<<<<<<< HEAD
         codeOntology.processSources();
         codeOntology.processJars();
         codeOntology.postCompletionTasks();
+=======
+        try {
+            codeOntology.processSources();
+            codeOntology.processJars();
+            codeOntology.postCompletionTasks();
+        } catch (Exception | Error e) {
+            codeOntology.handleFailure(e);
+        }
+>>>>>>> master
         System.exit(status);
     }
 
@@ -81,6 +91,7 @@ public class CodeOntology {
         }
     }
 
+<<<<<<< HEAD
     public void handleFailure(Exception e) {
         System.out.println("It was a good plan that went awry.");
         if (e != null) {
@@ -89,6 +100,16 @@ public class CodeOntology {
             }
             if (codeOntology.getArguments().stackTraceMode()) {
                 e.printStackTrace();
+=======
+    public void handleFailure(Throwable t) {
+        System.out.println("It was a good plan that went awry.");
+        if (t != null) {
+            if (t.getMessage() != null) {
+                System.out.println(t.getMessage());
+            }
+            if (codeOntology.getArguments().stackTraceMode()) {
+                t.printStackTrace();
+>>>>>>> master
             }
         }
         status = -1;

@@ -1,6 +1,10 @@
 #!/bin/bash
 
+<<<<<<< HEAD
 repositories=$(ls $1 | sort -R | tail -30)
+=======
+repositories=$(ls $1)
+>>>>>>> master
 
 if ! [ -e output ]; then
 	mkdir output
