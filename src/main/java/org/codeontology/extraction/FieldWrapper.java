@@ -3,6 +3,7 @@ package org.codeontology.extraction;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtField;
+<<<<<<< HEAD
 import spoon.reflect.reference.CtFieldReference;
 import spoon.reflect.reference.CtTypeReference;
 
@@ -23,17 +24,37 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
     @Override
     public String buildRelativeURI() {
         return getDeclaringElement().getRelativeURI() + SEPARATOR + getReference().getSimpleName();
+=======
+import spoon.reflect.declaration.CtType;
+
+
+public class FieldWrapper extends Wrapper<CtField<?>> {
+
+    public FieldWrapper(CtField<?> field) {
+        super(field);
+
+    }
+
+    @Override
+    public String getRelativeURI() {
+        return getFactory().wrap(getElement().getDeclaringType()).getRelativeURI() + SEPARATOR + getElement().getSimpleName();
+>>>>>>> master
     }
 
     @Override
     protected RDFNode getType() {
+<<<<<<< HEAD
         return Ontology.FIELD_ENTITY;
+=======
+        return Ontology.FIELD_CLASS;
+>>>>>>> master
     }
 
     @Override
     public void extract() {
         tagName();
         tagType();
+<<<<<<< HEAD
         tagDeclaringElement();
         tagJavaType();
         tagModifiers();
@@ -43,6 +64,16 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
         }
     }
 
+=======
+        tagComment();
+        tagJavaType();
+        tagModifiers();
+        tagDeclaringType();
+        tagAnnotations();
+    }
+
+<<<<<<< Updated upstream
+>>>>>>> master
     @Override
     public List<Modifier> getModifiers() {
         if (isDeclarationAvailable()) {
@@ -50,16 +81,43 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
         } else {
             try {
                 return Modifier.asList(((CtFieldReference<?>) getReference()).getModifiers());
+<<<<<<< HEAD
             } catch (NoClassDefFoundError e) {
                 return new ArrayList<>();
             }
         }
     }
 
+=======
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+            } catch (NoClassDefFoundError e) {
+=======
+            } catch (Exception | Error e) {
+>>>>>>> master
+=======
+            } catch (NoClassDefFoundError e) {
+>>>>>>> Stashed changes
+=======
+            } catch (NoClassDefFoundError e) {
+>>>>>>> Stashed changes
+                return new ArrayList<>();
+            }
+        }
+=======
+    public void tagDeclaringType() {
+        new DeclaredByTagger(this).tagDeclaredBy();
+>>>>>>> Stashed changes
+    }
+
+
+>>>>>>> master
     public void tagModifiers() {
         new ModifiableTagger(this).tagModifiers();
     }
 
+<<<<<<< HEAD
     @Override
     public TypeWrapper<?> getJavaType() {
         TypeWrapper<?> type;
@@ -121,3 +179,12 @@ public class FieldWrapper extends AbstractWrapper<CtField<?>> implements Modifia
         new DeclaringElementTagger(this).tagDeclaredBy();
     }
 }
+=======
+    public void tagJavaType() {
+        CtType<?> declaringType = getElement().getDeclaringType();
+        Wrapper<?> parent = getFactory().wrap(declaringType);
+        new JavaTypeTagger(this).tagJavaType(parent);
+    }
+}
+
+>>>>>>> master

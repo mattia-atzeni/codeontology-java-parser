@@ -1,6 +1,7 @@
 package org.codeontology;
 
 import com.martiansoftware.jsap.JSAPException;
+<<<<<<< HEAD
 import org.apache.commons.io.FileUtils;
 import org.codeontology.buildsystems.DependenciesLoader;
 import org.codeontology.buildsystems.LoaderFactory;
@@ -62,6 +63,55 @@ public class CodeOntology {
         codeOntology.processSources();
         codeOntology.processJars();
         codeOntology.postCompletionTasks();
+=======
+import org.codeontology.buildsystems.DependenciesLoader;
+import org.codeontology.buildsystems.LoaderFactory;
+import org.codeontology.extraction.RDFLogger;
+import org.codeontology.extraction.SourceProcessor;
+import spoon.Launcher;
+
+import java.io.File;
+import java.io.IOException;
+
+public class CodeOntology {
+    private static CodeOntology launcher;
+    private CodeOntologyArguments arguments;
+    private Launcher spoon;
+
+    private CodeOntology(String[] args) throws JSAPException {
+        spoon = new Launcher();
+        arguments = new CodeOntologyArguments(args);
+    }
+
+    public static void main(String[] args) {
+<<<<<<< Updated upstream
+        codeOntology = new CodeOntology(args);
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+        codeOntology.processSources();
+        codeOntology.processJars();
+        codeOntology.postCompletionTasks();
+=======
+        try {
+            codeOntology.processSources();
+            codeOntology.processJars();
+            codeOntology.postCompletionTasks();
+        } catch (Exception | Error e) {
+            codeOntology.handleFailure(e);
+        }
+>>>>>>> master
+=======
+        codeOntology.processSources();
+        codeOntology.processJars();
+        codeOntology.postCompletionTasks();
+>>>>>>> Stashed changes
+=======
+        codeOntology.processSources();
+        codeOntology.processJars();
+        codeOntology.postCompletionTasks();
+>>>>>>> Stashed changes
+>>>>>>> master
         System.exit(status);
     }
 
@@ -81,6 +131,12 @@ public class CodeOntology {
         }
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+>>>>>>> master
     public void handleFailure(Exception e) {
         System.out.println("It was a good plan that went awry.");
         if (e != null) {
@@ -89,13 +145,59 @@ public class CodeOntology {
             }
             if (codeOntology.getArguments().stackTraceMode()) {
                 e.printStackTrace();
+<<<<<<< HEAD
             }
         }
         status = -1;
+=======
+=======
+    public void handleFailure(Throwable t) {
+=======
+    public void handleFailure(Exception e) {
+>>>>>>> Stashed changes
+=======
+    public void handleFailure(Exception e) {
+>>>>>>> Stashed changes
+        System.out.println("It was a good plan that went awry.");
+        if (e != null) {
+            if (e.getMessage() != null) {
+                System.out.println(e.getMessage());
+            }
+            if (codeOntology.getArguments().stackTraceMode()) {
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+                t.printStackTrace();
+>>>>>>> master
+=======
+        try {
+            launcher = new CodeOntology(args);
+            launcher.loadDependencies();
+            launcher.spoon();
+            launcher.extractAllTriples();
+            launcher.postCompletionTasks();
+        } catch (Exception e) {
+            System.out.println("Sorry, something went awry.");
+            if (e.getMessage() != null) {
+                System.out.println(e.getMessage());
+=======
+                e.printStackTrace();
+>>>>>>> Stashed changes
+=======
+                e.printStackTrace();
+>>>>>>> Stashed changes
+            }
+            if (launcher.getArguments().stackTraceMode()) {
+                e.printStackTrace();
+>>>>>>> Stashed changes
+            }
+            System.exit(-1);
+        }
+>>>>>>> master
     }
 
     private void spoon() {
         checkInput();
+<<<<<<< HEAD
         try {
             long start = System.currentTimeMillis();
             spoon.addInputResource(getArguments().getInput());
@@ -127,6 +229,17 @@ public class CodeOntology {
         long start = System.currentTimeMillis();
         LoaderFactory factory = LoaderFactory.getInstance();
         loader = factory.getLoader(getArguments().getInput());
+=======
+        spoon.addInputResource(getArguments().getInput());
+        System.out.println("Building model...");
+        spoon.buildModel();
+        System.out.println("Model built successfully.");
+    }
+
+    private void loadDependencies() {
+        LoaderFactory factory = LoaderFactory.getInstance();
+        DependenciesLoader loader = factory.getLoader(getArguments().getInput());
+>>>>>>> master
         loader.loadDependencies();
 
         String classpath = getArguments().getClasspath();
@@ -134,6 +247,7 @@ public class CodeOntology {
         if (classpath != null) {
             loader.loadClasspath(classpath);
         }
+<<<<<<< HEAD
         long end = System.currentTimeMillis();
         System.out.println("Dependencies downloaded in " + formatter.print(new Period(start, end)) + ".");
     }
@@ -186,28 +300,54 @@ public class CodeOntology {
             });
             Runtime.getRuntime().addShutdownHook(shutdownThread);
         }
+=======
+>>>>>>> master
     }
 
     private void checkInput() {
         File input = new File(getArguments().getInput());
         if (!input.exists()) {
+<<<<<<< HEAD
             System.out.println("File " + input.getPath() + " doesn't seem to exist.");
             System.exit(-1);
         }
         if (!input.canRead() && !input.setReadable(true)) {
             System.out.println("File " + input.getPath() + " doesn't seem to be readable.");
+=======
+            System.out.println("Folder " + input.getPath() + " doesn't seem to exist.");
+            System.exit(-1);
+        }
+        if (!input.canRead() && !input.setReadable(true)) {
+            System.out.println("Folder " + input.getPath() + " doesn't seem to be readable.");
+>>>>>>> master
             System.exit(-1);
         }
     }
 
+<<<<<<< HEAD
     public static CodeOntology getInstance() {
         return codeOntology;
+=======
+    private void extractAllTriples() {
+        RDFLogger logger = RDFLogger.getInstance();
+        logger.setOutputFile(getArguments().getOutput());
+        System.out.println("Extracting triples...");
+        spoon.addProcessor(new SourceProcessor());
+        spoon.process();
+        logger.writeRDF();
+        System.out.println("Triples extracted successfully.");
+    }
+
+    public static CodeOntology getLauncher() {
+        return launcher;
+>>>>>>> master
     }
 
     public CodeOntologyArguments getArguments() {
         return arguments;
     }
 
+<<<<<<< HEAD
     public static boolean downloadDependencies() {
         return getInstance().downloadDependencies;
     }
@@ -262,4 +402,28 @@ public class CodeOntology {
         System.out.println("[WARNING] " + message);
     }
 
+=======
+    public static boolean getDownloadDependenciesFlag() {
+        return getLauncher().getArguments().getDownloadDependenciesFlag();
+    }
+
+    public static boolean verboseMode() {
+        return getLauncher().getArguments().getVerboseMode();
+    }
+
+    private void postCompletionTasks() {
+        if (getLauncher().getArguments().getShutdownFlag()) {
+            Thread shutdownThread = new Thread(() -> {
+                try {
+                    System.out.println("Shutting down...");
+                    ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "sleep 3; shutdown -h now");
+                    processBuilder.start();
+                } catch (IOException e) {
+                    System.out.println("Shutdown failed");
+                }
+            });
+            Runtime.getRuntime().addShutdownHook(shutdownThread);
+        }
+    }
+>>>>>>> master
 }

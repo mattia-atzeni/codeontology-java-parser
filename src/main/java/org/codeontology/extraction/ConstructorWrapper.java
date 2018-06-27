@@ -17,6 +17,14 @@ public class ConstructorWrapper extends ExecutableWrapper<CtConstructor<?>> {
 
     @Override
     protected RDFNode getType() {
+<<<<<<< HEAD:src/main/java/org/codeontology/extraction/ConstructorWrapper.java
         return Ontology.CONSTRUCTOR_ENTITY;
+=======
+<<<<<<< Updated upstream:src/main/java/org/codeontology/extraction/ConstructorWrapper.java
+        return Ontology.CONSTRUCTOR_CLASS;
+=======
+        return Ontology.getConstructorIndividual();
+>>>>>>> Stashed changes:src/main/java/org/codeontology/extractors/ConstructorExtractor.java
+>>>>>>> master:src/main/java/org/codeontology/extractors/ConstructorExtractor.java
     }
 }

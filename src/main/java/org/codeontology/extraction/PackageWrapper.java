@@ -5,6 +5,7 @@ import org.codeontology.CodeOntology;
 import org.codeontology.Ontology;
 import spoon.reflect.declaration.CtPackage;
 import spoon.reflect.declaration.CtType;
+<<<<<<< HEAD
 import spoon.reflect.reference.CtPackageReference;
 import spoon.reflect.reference.CtTypeReference;
 
@@ -15,11 +16,19 @@ import java.util.Set;
 public class PackageWrapper extends AbstractWrapper<CtPackage> {
 
     private Set<TypeWrapper<?>> types;
+=======
+
+import java.util.Set;
+
+
+public class PackageWrapper extends Wrapper<CtPackage> {
+>>>>>>> master
 
     public PackageWrapper(CtPackage pack) {
         super(pack);
     }
 
+<<<<<<< HEAD
     public PackageWrapper(CtPackageReference pack) {
         super(pack);
     }
@@ -27,17 +36,30 @@ public class PackageWrapper extends AbstractWrapper<CtPackage> {
     @Override
     public String buildRelativeURI() {
         String relativeURI = getPackageName();
+=======
+    @Override
+    public String getRelativeURI() {
+        String relativeURI = getElement().getQualifiedName();
+>>>>>>> master
         return relativeURI.replace(" ", SEPARATOR);
     }
 
     @Override
     protected RDFNode getType() {
+<<<<<<< HEAD
         return Ontology.PACKAGE_ENTITY;
+=======
+        return Ontology.PACKAGE_CLASS;
+>>>>>>> master
     }
 
     @Override
     public void extract() {
+<<<<<<< HEAD
         Set<TypeWrapper<?>> types = getTypes();
+=======
+        Set<CtType<?>> types = getElement().getTypes();
+>>>>>>> master
 
         if (types.isEmpty()) {
             return;
@@ -45,6 +67,7 @@ public class PackageWrapper extends AbstractWrapper<CtPackage> {
 
         tagType();
         tagName();
+<<<<<<< HEAD
         tagPackageOf();
 
         if (isDeclarationAvailable()) {
@@ -92,6 +115,20 @@ public class PackageWrapper extends AbstractWrapper<CtPackage> {
             return getElement().getQualifiedName();
         } else {
             return ((CtPackageReference) getReference()).getActualPackage().getName();
+=======
+        tagComment();
+        tagPackageOf(types);
+    }
+
+    public void tagPackageOf(Set<CtType<?>> types) {
+        for (CtType<?> current : types) {
+            TypeWrapper<?> wrapper = getFactory().wrap(current);
+            getLogger().addTriple(this, Ontology.PACKAGE_OF_PROPERTY, wrapper.getResource());
+            if (CodeOntology.verboseMode()) {
+                System.out.println("Extracting triples for " + current.getQualifiedName());
+            }
+            wrapper.extract();
+>>>>>>> master
         }
     }
 }

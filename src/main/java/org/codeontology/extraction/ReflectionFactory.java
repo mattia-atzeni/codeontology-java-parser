@@ -1,7 +1,13 @@
 package org.codeontology.extraction;
 
 import spoon.reflect.factory.Factory;
+<<<<<<< HEAD
 import spoon.reflect.reference.*;
+=======
+import spoon.reflect.reference.CtExecutableReference;
+import spoon.reflect.reference.CtTypeParameterReference;
+import spoon.reflect.reference.CtTypeReference;
+>>>>>>> master
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -127,6 +133,7 @@ public class ReflectionFactory {
     }
 
     public Executable createActualExecutable(CtExecutableReference<?> executableReference) {
+<<<<<<< HEAD
         Executable executable = null;
         Class<?> declaringClass;
 
@@ -175,6 +182,49 @@ public class ReflectionFactory {
                         }
                     }
                 }
+=======
+
+        Executable executable = executableReference.getActualMethod();
+
+        if (executable == null) {
+            executable = executableReference.getActualConstructor();
+        }
+
+        if (executable == null) {
+            try {
+                Class<?> declaringClass = Class.forName(executableReference.getDeclaringType().getQualifiedName());
+
+                Executable[] executables = declaringClass.getDeclaredMethods();
+                if (executableReference.isConstructor()) {
+                    executables = declaringClass.getDeclaredConstructors();
+                }
+
+                for (Executable current : executables) {
+                    if (current.getName().equals(executableReference.getSimpleName()) || current instanceof Constructor) {
+                        if (current.getParameterCount() == executableReference.getParameters().size()) {
+                            List<CtTypeReference<?>> parameters = executableReference.getParameters();
+                            Class<?>[] classes = new Class<?>[parameters.size()];
+                            for (int i = 0; i < parameters.size(); i++) {
+                                classes[i] = parameters.get(i).getActualClass();
+                            }
+
+                            boolean acc = true;
+
+                            Class<?>[] parameterTypes = current.getParameterTypes();
+                            for (int i = 0; i < classes.length && acc; i++) {
+                                acc = classes[i].isAssignableFrom(parameterTypes[i]);
+                            }
+
+                            if (acc) {
+                                executable = current;
+                                break;
+                            }
+                        }
+                    }
+                }
+            } catch (ClassNotFoundException | NoSuchMethodError e) {
+                throw new RuntimeException(e);
+>>>>>>> master
             }
         }
 
@@ -182,6 +232,7 @@ public class ReflectionFactory {
     }
 
     public CtTypeReference<?> createTypeReference(Class<?> clazz) {
+<<<<<<< HEAD
         return getParent().Class().createReference(clazz);
     }
 
@@ -199,6 +250,9 @@ public class ReflectionFactory {
 
     public CtFieldReference<?> createField(Field field) {
         return getParent().Field().createReference(field);
+=======
+        return getParent().Type().createReference(clazz);
+>>>>>>> master
     }
 
     public void setParent(Factory parent) {

@@ -36,13 +36,61 @@ public class Ontology {
         return ModelFactory.createDefaultModel();
     }
 
+<<<<<<< HEAD
     public static Model model = ontology();
+=======
+<<<<<<< Updated upstream
+    public static Model model = ontology();
+
+    public static final Resource PACKAGE_CLASS = model.getResource(WOC + "Package");
+
+    public static final Resource CLASS_CLASS = model.getResource(WOC + "Class");
+
+    public static final Resource INTERFACE_CLASS = model.getResource(WOC + "Interface");
+
+    public static final Resource ENUM_CLASS = model.getResource(WOC + "Enum");
+
+    public static final Resource ANNOTATION_CLASS = model.getResource(WOC + "Annotation");
+
+    public static final Resource PRIMITIVE_CLASS = model.getResource(WOC + "Primitive");
+
+    public static final Resource ARRAY_CLASS = model.getResource(WOC + "Array");
+
+    public static final Resource TYPE_VARIABLE_CLASS =  model.getResource(WOC + "TypeVariable");
+
+    public static final Resource PARAMETERIZED_TYPE_CLASS =  model.getResource(WOC + "ParameterizedType");
+
+    public static final Resource FIELD_CLASS =  model.getResource(WOC + "Field");
+
+    public static final Resource CONSTRUCTOR_CLASS = model.getResource(WOC + "Constructor");
+
+    public static final Resource METHOD_CLASS = model.getResource(WOC + "Method");
+
+    public static final Resource PARAMETER_CLASS = model.getResource(WOC + "Parameter");
+
+    public static final Resource VARIABLE_CLASS = model.getResource(WOC + "Variable");
+
+    public static final Resource LAMBDA_CLASS = model.getResource(WOC + "Lambda");
+
+    public static final Resource TYPE_ARGUMENT_CLASS = model.getResource(WOC + "TypeArgument");
+=======
+    public static Property getTypeProperty() {
+        return model.getProperty(rdf + "type");
+    }
+>>>>>>> master
 
     public static final Resource PACKAGE_ENTITY = model.getResource(WOC + "Package");
 
     public static final Resource CLASS_ENTITY = model.getResource(WOC + "Class");
 
+<<<<<<< HEAD
     public static final Resource INTERFACE_ENTITY = model.getResource(WOC + "Interface");
+=======
+    public static Property getNameProperty() {
+        return model.getProperty(baseURI + "name");
+    }
+>>>>>>> Stashed changes
+>>>>>>> master
 
     public static final Resource ENUM_ENTITY = model.getResource(WOC + "Enum");
 
@@ -72,7 +120,17 @@ public class Ontology {
 
     public static final Resource TYPE_ARGUMENT_ENTITY = model.getResource(WOC + "TypeArgument");
 
+<<<<<<< HEAD
     public static final Resource WILDCARD_ENTITY = model.getResource(WOC + "Wildcard");
+=======
+<<<<<<< Updated upstream
+    public static final Property IS_NESTED_IN_PROPERTY = model.getProperty(WOC + "nestedIn");
+=======
+    public static Resource getMethodIndividual() {
+        return model.getResource(baseURI + "Method");
+    }
+>>>>>>> Stashed changes
+>>>>>>> master
 
 
     public static final Property RDF_TYPE_PROPERTY = model.getProperty(RDF + "type");
@@ -101,9 +159,22 @@ public class Ontology {
 
     public static final Property THROWS_PROPERTY = model.getProperty(WOC + "throws");
 
+<<<<<<< HEAD
     public static final Property NESTED_IN_PROPERTY = model.getProperty(WOC + "nestedIn");
 
     public static final Property MODIFIER_PROPERTY = model.getProperty(WOC + "modifier");
+=======
+<<<<<<< Updated upstream
+=======
+    public static Property getStaticProperty() {
+        return model.getProperty(baseURI + "Static");
+    }
+
+    public static Property getSynchronizedProperty() {
+        return model.getProperty(baseURI + "Synchronized");
+    }
+>>>>>>> Stashed changes
+>>>>>>> master
 
     public static final Property VISIBILITY_PROPERTY = model.getProperty(WOC + "visibility");
 

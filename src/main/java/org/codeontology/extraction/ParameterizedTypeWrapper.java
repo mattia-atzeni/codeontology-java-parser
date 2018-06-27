@@ -17,7 +17,11 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
     }
 
     @Override
+<<<<<<< HEAD
     public String buildRelativeURI() {
+=======
+    public String getRelativeURI() {
+>>>>>>> master
         arguments = getReference().getActualTypeArguments();
         String uri = getReference().getQualifiedName();
         String argumentsString = "";
@@ -48,7 +52,11 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
 
     @Override
     protected RDFNode getType() {
+<<<<<<< HEAD
         return Ontology.PARAMETERIZED_TYPE_ENTITY;
+=======
+        return Ontology.PARAMETERIZED_TYPE_CLASS;
+>>>>>>> master
     }
 
     public void tagRawType() {
@@ -67,6 +75,7 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         }
     }
 
+<<<<<<< HEAD
     @Override
     public void follow() {
         if (WrapperRegister.getInstance().add(this))  {
@@ -74,6 +83,8 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         }
     }
 
+=======
+>>>>>>> master
     class TypeArgumentWrapper extends TypeWrapper<CtType<?>> {
 
         private int position = 0;
@@ -94,7 +105,13 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
 
         private void tagJavaType() {
             getLogger().addTriple(this, Ontology.JAVA_TYPE_PROPERTY, argument);
+<<<<<<< HEAD
             argument.follow();
+=======
+            if (!argument.isDeclarationAvailable()) {
+                argument.extract();
+            }
+>>>>>>> master
         }
 
         private void tagPosition() {
@@ -102,13 +119,21 @@ public class ParameterizedTypeWrapper extends TypeWrapper<CtType<?>> {
         }
 
         @Override
+<<<<<<< HEAD
         public String buildRelativeURI() {
+=======
+        public String getRelativeURI() {
+>>>>>>> master
             return ParameterizedTypeWrapper.this.getRelativeURI() + SEPARATOR + position;
         }
 
         @Override
         protected RDFNode getType() {
+<<<<<<< HEAD
             return Ontology.TYPE_ARGUMENT_ENTITY;
+=======
+            return Ontology.TYPE_ARGUMENT_CLASS;
+>>>>>>> master
         }
 
         public void setPosition(int position) {

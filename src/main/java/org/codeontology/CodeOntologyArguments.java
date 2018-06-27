@@ -27,6 +27,7 @@ public class CodeOntologyArguments {
 
     public static final String SHUTDOWN_LONG = "shutdown";
 
+<<<<<<< HEAD
     public static final String JAR_INPUT_LONG = "jar";
 
     public static final String EXPLORE_DEPENDENCIES_LONG = "explore-dependencies";
@@ -35,6 +36,8 @@ public class CodeOntologyArguments {
 
     public static final String CLEAN_LONG = "clean";
 
+=======
+>>>>>>> master
     private JSAP jsap;
     private JSAPResult result;
 
@@ -53,6 +56,10 @@ public class CodeOntologyArguments {
         option.setShortFlag(INPUT_SHORT);
         option.setLongFlag(INPUT_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
+<<<<<<< HEAD
+=======
+        option.setRequired(true);
+>>>>>>> master
         option.setHelp("Path to source files.");
         jsap.registerParameter(option);
 
@@ -65,6 +72,7 @@ public class CodeOntologyArguments {
         option.setHelp("Output file name.");
         jsap.registerParameter(option);
 
+<<<<<<< HEAD
         option = new FlaggedOption(JAR_INPUT_LONG);
         option.setLongFlag(JAR_INPUT_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
@@ -72,11 +80,17 @@ public class CodeOntologyArguments {
         option.setHelp("Path to a jar input file");
         jsap.registerParameter(option);
 
+=======
+>>>>>>> master
         option = new FlaggedOption(CLASSPATH_LONG);
         option.setLongFlag(CLASSPATH_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
         option.setRequired(false);
+<<<<<<< HEAD
         option.setHelp("Specifies a list of directories and JAR files separated by colons (:) to search for class files.");
+=======
+        option.setHelp("Specifies a list of directories, JAR files and classes separated by colons (:) to search for class files.");
+>>>>>>> master
         jsap.registerParameter(option);
 
         flag = new Switch(ND);
@@ -106,18 +120,22 @@ public class CodeOntologyArguments {
         flag.setHelp("Prints this help message.");
         jsap.registerParameter(flag);
 
+<<<<<<< HEAD
         flag = new Switch(EXPLORE_DEPENDENCIES_LONG);
         flag.setLongFlag(EXPLORE_DEPENDENCIES_LONG);
         flag.setDefault("false");
         flag.setHelp("Explore jar files in classpath");
         jsap.registerParameter(flag);
 
+=======
+>>>>>>> master
         flag = new Switch(SHUTDOWN_LONG);
         flag.setLongFlag(SHUTDOWN_LONG);
         flag.setDefault("false");
         flag.setHelp("Shutdown after complete");
         jsap.registerParameter(flag);
 
+<<<<<<< HEAD
         flag = new Switch(DO_NOT_EXTRACT_LONG);
         flag.setLongFlag(DO_NOT_EXTRACT_LONG);
         flag.setDefault("false");
@@ -129,6 +147,9 @@ public class CodeOntologyArguments {
         flag.setDefault("false");
         flag.setHelp("Remove tests if compilation fails.");
         jsap.registerParameter(flag);
+=======
+
+>>>>>>> master
 
     }
 
@@ -178,11 +199,19 @@ public class CodeOntologyArguments {
         return result.getString(OUTPUT_LONG);
     }
 
+<<<<<<< HEAD
     public boolean downloadDependencies() {
         return !result.getBoolean(ND);
     }
 
     public boolean verboseMode() {
+=======
+    public boolean getDownloadDependenciesFlag() {
+        return !result.getBoolean(ND);
+    }
+
+    public boolean getVerboseMode() {
+>>>>>>> master
         return result.getBoolean(VERBOSE_LONG);
     }
 
@@ -190,6 +219,7 @@ public class CodeOntologyArguments {
         return result.getBoolean(STACKTRACE_LONG);
     }
 
+<<<<<<< HEAD
     public boolean shutdownFlag() {
         return result.getBoolean(SHUTDOWN_LONG);
     }
@@ -198,6 +228,12 @@ public class CodeOntologyArguments {
         return result.getBoolean(DO_NOT_EXTRACT_LONG);
     }
 
+=======
+    public boolean getShutdownFlag() {
+        return result.getBoolean(SHUTDOWN_LONG);
+    }
+
+>>>>>>> master
     private String getDefaultOutput() {
         String extension = ".nt";
         String base = "triples";
@@ -219,6 +255,7 @@ public class CodeOntologyArguments {
         return defaultName;
     }
 
+<<<<<<< HEAD
     public String getJarInput() {
         return result.getString(JAR_INPUT_LONG);
     }
@@ -234,4 +271,9 @@ public class CodeOntologyArguments {
     public boolean removeTests() {
         return result.getBoolean(CLEAN_LONG);
     }
+=======
+    public String getClasspath() {
+        return result.getString(CLASSPATH_LONG);
+    }
+>>>>>>> master
 }

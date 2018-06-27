@@ -22,7 +22,23 @@ public class JarProcessor {
             this.jarFile = new JarFile(path);
             ClasspathLoader.getInstance().load(path);
             systemErr = System.err;
+<<<<<<< HEAD
         } catch (Exception e) {
+=======
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+        } catch (Exception e) {
+=======
+        } catch (Exception | Error e) {
+>>>>>>> master
+=======
+        } catch (Exception e) {
+>>>>>>> Stashed changes
+=======
+        } catch (Exception e) {
+>>>>>>> Stashed changes
+>>>>>>> master
             CodeOntology.showWarning("Could not access file " + path);
         }
     }
@@ -40,7 +56,23 @@ public class JarProcessor {
             } finally {
                 System.setErr(systemErr);
             }
+<<<<<<< HEAD
         } catch (Exception e) {
+=======
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< HEAD
+        } catch (Exception e) {
+=======
+        } catch (Exception | Error e) {
+>>>>>>> master
+=======
+        } catch (Exception e) {
+>>>>>>> Stashed changes
+=======
+        } catch (Exception e) {
+>>>>>>> Stashed changes
+>>>>>>> master
             CodeOntology.getInstance().handleFailure(e);
         }
     }

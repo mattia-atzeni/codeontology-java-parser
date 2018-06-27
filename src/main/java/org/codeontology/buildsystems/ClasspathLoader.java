@@ -5,6 +5,10 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import java.io.File;
+<<<<<<< HEAD
+=======
+import java.io.IOException;
+>>>>>>> master
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,12 +19,18 @@ import java.util.Set;
 public class ClasspathLoader {
 
     private static ClasspathLoader instance;
+<<<<<<< HEAD
     private Set<File> classpath;
     private boolean locked;
 
     private ClasspathLoader() {
         classpath = new HashSet<>();
         locked = false;
+=======
+
+    private ClasspathLoader() {
+
+>>>>>>> master
     }
 
     public static ClasspathLoader getInstance() {
@@ -39,11 +49,15 @@ public class ClasspathLoader {
             loadAllJars(file);
             return;
         }
+<<<<<<< HEAD
 
         if (file.getPath().endsWith(".jar") && !locked) {
             classpath.add(file);
         }
 
+=======
+        
+>>>>>>> master
         try {
             load(file.toURI().toURL());
         } catch (MalformedURLException e) {
@@ -51,7 +65,11 @@ public class ClasspathLoader {
         }
     }
 
+<<<<<<< HEAD
     private void load(URL url) {
+=======
+    public void load(URL url) {
+>>>>>>> master
         URLClassLoader loader = (URLClassLoader) ClassLoader.getSystemClassLoader();
         Class<URLClassLoader> clazz = URLClassLoader.class;
         final Class[] PARAMETERS = new Class[]{URL.class};
@@ -77,7 +95,11 @@ public class ClasspathLoader {
         }
     }
 
+<<<<<<< HEAD
     public void loadAllJars(String path) {
+=======
+    public void loadAllJars(String path) throws IOException {
+>>>>>>> master
         loadAllJars(new File(path));
     }
 
@@ -87,6 +109,7 @@ public class ClasspathLoader {
             load(path);
         }
     }
+<<<<<<< HEAD
 
     public Set<File> getJarsLoaded() {
         return classpath;
@@ -99,5 +122,7 @@ public class ClasspathLoader {
     public void release() {
         locked = false;
     }
+=======
+>>>>>>> master
 }
 

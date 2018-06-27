@@ -13,7 +13,11 @@ public class PrimitiveTypeWrapper extends TypeWrapper<CtType<?>> {
 
     @Override
     protected RDFNode getType() {
+<<<<<<< HEAD
         return Ontology.PRIMITIVE_ENTITY;
+=======
+        return Ontology.PRIMITIVE_CLASS;
+>>>>>>> master
     }
 
     @Override

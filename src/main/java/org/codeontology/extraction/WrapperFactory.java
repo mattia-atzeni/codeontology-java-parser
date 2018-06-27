@@ -4,7 +4,13 @@ import org.codeontology.exceptions.NullTypeException;
 import spoon.reflect.code.CtLambda;
 import spoon.reflect.code.CtLocalVariable;
 import spoon.reflect.declaration.*;
+<<<<<<< HEAD
 import spoon.reflect.reference.*;
+=======
+import spoon.reflect.reference.CtExecutableReference;
+import spoon.reflect.reference.CtTypeParameterReference;
+import spoon.reflect.reference.CtTypeReference;
+>>>>>>> master
 
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
@@ -30,18 +36,24 @@ public class WrapperFactory {
         return new PackageWrapper(pack);
     }
 
+<<<<<<< HEAD
     public PackageWrapper wrap(CtPackageReference pack) {
         return new PackageWrapper(pack);
     }
 
+=======
+>>>>>>> master
     public FieldWrapper wrap(CtField<?> field) {
         return new FieldWrapper(field);
     }
 
+<<<<<<< HEAD
     public FieldWrapper wrap(CtFieldReference<?> field) {
         return new FieldWrapper(field);
     }
 
+=======
+>>>>>>> master
     public MethodWrapper wrap(CtMethod<?> method) {
         return new MethodWrapper(method);
     }
