@@ -1,6 +1,13 @@
 package org.codeontology.buildsystems;
 
+<<<<<<< HEAD
 import org.codeontology.buildsystems.gradle.AndroidLoader;
+=======
+<<<<<<< HEAD
+import org.codeontology.buildsystems.gradle.AndroidLoader;
+=======
+>>>>>>> master
+>>>>>>> master
 import org.codeontology.buildsystems.gradle.GradleLoader;
 import org.codeontology.buildsystems.maven.MavenLoader;
 
@@ -28,6 +35,10 @@ public class LoaderFactory {
 
     public DependenciesLoader getLoader(File project) {
         switch (BuildSystem.getBuildSystem(project)) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
             case MAVEN:
                 return new MavenLoader(project);
             case GRADLE:
@@ -36,6 +47,13 @@ public class LoaderFactory {
                 } else {
                     return new GradleLoader(project);
                 }
+<<<<<<< HEAD
+=======
+=======
+            case MAVEN: return new MavenLoader(project);
+            case GRADLE:return new GradleLoader(project);
+>>>>>>> master
+>>>>>>> master
         }
 
         return new DefaultLoader(project);

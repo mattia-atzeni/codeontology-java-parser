@@ -4,9 +4,23 @@ package org.codeontology.buildsystems.gradle;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+<<<<<<< HEAD
 import org.codeontology.CodeOntology;
 
 import java.io.*;
+=======
+<<<<<<< HEAD
+import org.codeontology.CodeOntology;
+
+import java.io.*;
+=======
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+>>>>>>> master
+>>>>>>> master
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -17,6 +31,7 @@ import java.util.Set;
  */
 public class GradleModulesHandler {
 
+<<<<<<< HEAD
     private GradleLoader loader;
     private File projectRoot;
 
@@ -24,6 +39,23 @@ public class GradleModulesHandler {
     public GradleModulesHandler(GradleLoader loader) {
         this.loader = loader;
         projectRoot = loader.getProjectDirectory();
+=======
+<<<<<<< HEAD
+    private GradleLoader loader;
+    private File projectRoot;
+
+
+    public GradleModulesHandler(GradleLoader loader) {
+        this.loader = loader;
+        projectRoot = loader.getProjectDirectory();
+=======
+    private File projectRoot;
+
+
+    public GradleModulesHandler (File project) {
+        projectRoot = project;
+>>>>>>> master
+>>>>>>> master
     }
 
     public void setUp() {
@@ -36,6 +68,10 @@ public class GradleModulesHandler {
      * @return              The set of modules.
      */
     public Set<File> findSubProjects() {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
         Set<File> subProjects = new HashSet<>();
         String task = "subprojects {\n" +
                 "\ttask CodeOntologySub << {\n" +
@@ -49,6 +85,8 @@ public class GradleModulesHandler {
                 writer.write("\n\n" + task);
                 writer.close();
             }
+<<<<<<< HEAD
+=======
 
             loader.runTask("CodeOntologySub");
 
@@ -63,6 +101,30 @@ public class GradleModulesHandler {
         }
 
         return subProjects;
+=======
+        try {
+            Set<File> subProjects= new HashSet<>();
+            File settings = new File(projectRoot.getPath() + "/settings.gradle");
+            Scanner scanner = new Scanner(settings);
+>>>>>>> master
+
+            loader.runTask("CodeOntologySub");
+
+            try (Scanner scanner = new Scanner(new File(loader.getProjectDirectory().getPath() + "/subProjects"))) {
+                while (scanner.hasNextLine()) {
+                    subProjects.add(new File(scanner.nextLine()));
+                }
+            }
+
+        } catch (IOException e) {
+            CodeOntology.showWarning("Could not get subprojects");
+        }
+<<<<<<< HEAD
+
+        return subProjects;
+=======
+>>>>>>> master
+>>>>>>> master
     }
 
     /**
@@ -89,6 +151,15 @@ public class GradleModulesHandler {
     public Set<File> jarModules() {
         try {
             Set<File> jars = new HashSet<>();
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+            File error = new File(projectRoot.getPath() + "/error");
+            File output = new File(projectRoot.getPath() + "/output");
+>>>>>>> master
+>>>>>>> master
             File build = new File(projectRoot.getPath() + "/build.gradle");
 
             Scanner scanner = new Scanner(build);
@@ -109,7 +180,21 @@ public class GradleModulesHandler {
                 writer.close();
             }
 
+<<<<<<< HEAD
             loader.getBuilder("jar").start().waitFor();
+=======
+<<<<<<< HEAD
+            loader.getBuilder("jar").start().waitFor();
+=======
+            ProcessBuilder prB = new ProcessBuilder("gradle", "jar");
+            prB.directory(projectRoot);
+            prB.redirectError(error);
+            prB.redirectOutput(output);
+
+            prB.start().waitFor();
+            System.out.println("Done.");
+>>>>>>> master
+>>>>>>> master
 
             jars.addAll(FileUtils.listFiles(projectRoot,
                     FileFilterUtils.suffixFileFilter(".jar"),
