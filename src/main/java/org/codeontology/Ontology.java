@@ -19,24 +19,41 @@ import java.io.FileReader;
  */
 public class Ontology {
 
-    public static final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-    public static final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
-    public static final String WOC = "http://rdf.webofcode.org/woc/";
+    private static final String rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+    private static final String rdfs = "http://www.w3.org/2000/01/rdf-schema#";
+    private final static String baseURI = "http://rdf.webofcode.org/woc/";
 
-    private static Model ontology() {
+    public final static Model model = ontology();
+
+    public static Model baseModel() {
+        return ModelFactory.createDefaultModel();
+    }
+
+    /**
+     * Create a default model with programming languages ontology.
+     * @return	A default model with programming languages ontology.
+     */
+    public static Model ontology() {
         try {
             File ontology = new File(System.getProperty("user.dir") + "/ontology/woc.xml");
             FileReader reader = new FileReader(ontology);
             return ModelFactory.createDefaultModel().read(reader, "");
         } catch (FileNotFoundException e) {
-           throw new RuntimeException(e);
+            e.printStackTrace();
+            System.exit(-1);
+            return null;
         }
     }
 
-    public static Model getModel() {
-        return ModelFactory.createDefaultModel();
+    /**
+     * Get a new base ontology.
+     * @return	A new ontology.
+     */
+    public static Model model() {
+        return ontology();
     }
 
+<<<<<<< Updated upstream
     public static Model model = ontology();
 
     public static final Resource PACKAGE_CLASS = model.getResource(WOC + "Package");
@@ -70,82 +87,203 @@ public class Ontology {
     public static final Resource LAMBDA_CLASS = model.getResource(WOC + "Lambda");
 
     public static final Resource TYPE_ARGUMENT_CLASS = model.getResource(WOC + "TypeArgument");
+=======
+    public static Property getTypeProperty() {
+        return model.getProperty(rdf + "type");
+    }
 
+    public static Property getAbstractTypeProperty() {
+        return model.getProperty(baseURI + "type");
+    }
 
-    public static final Property RDF_TYPE_PROPERTY = model.getProperty(RDF + "type");
+    public static Property getCommentProperty() {
+        return model.getProperty(rdfs + "comment");
+    }
 
-    public static final Property JAVA_TYPE_PROPERTY = model.getProperty(WOC + "type");
+    public static Property getNameProperty() {
+        return model.getProperty(baseURI + "name");
+    }
+>>>>>>> Stashed changes
 
-    public static final Property COMMENT_PROPERTY = model.getProperty(RDFS + "comment");
+    public static Property getDeclaredByProperty() {
+        return model.getProperty(baseURI + "declared_by");
+    }
 
-    public static final Property NAME_PROPERTY = model.getProperty(WOC + "name");
+    public static Property getReturnProperty() {
+        return model.getProperty(baseURI + "returns");
+    }
 
-    public static final Property DECLARED_BY_PROPERTY = model.getProperty(WOC + "declaredBy");
+    public static Property getReturnLocalFieldProperty() {
+        return model.getProperty(baseURI + "returns_var");
+    }
 
-    public static final Property RETURNS_PROPERTY = model.getProperty(WOC + "returns");
+    public static Property getReturnClassFieldProperty() {
+        return model.getProperty(baseURI + "returns_field");
+    }
 
-    public static final Property RETURNS_VAR_PROPERTY = model.getProperty(WOC + "returnsVar");
+    public static Property getConstructsProperty() {
+        return model.getProperty(baseURI + "constructs");
+    }
 
-    public static final Property RETURNS_FIELD_PROPERTY = model.getProperty(WOC + "returnsField");
+    public static Property getParameterProperty() {
+        return model.getProperty(baseURI + "parameter");
+    }
 
-    public static final Property CONSTRUCTS_PROPERTY = model.getProperty(WOC + "constructs");
+    public static Property getParameterPositionProperty() {
+        return model.getProperty(baseURI + "parameter_position");
+    }
 
-    public static final Property PARAMETER_PROPERTY = model.getProperty(WOC + "parameter");
+    public static Resource getParameterIndividual() {
+        return model.getResource(baseURI + "Parameter");
+    }
 
-    public static final Property POSITION_PROPERTY = model.getProperty(WOC + "position");
+    // default value
+    /*public static Resource getExpressionIndividual() {
+        return  model.getResource(baseURI + "Expression");
+    }*/
 
-    public static final Property SOURCE_CODE_PROPERTY = model.getProperty(WOC + "sourceCode");
+    public static Property getSourceCodeProperty () {
+        return model.getProperty(baseURI + "source_code");
+    }
 
-    public static final Property THROWS_PROPERTY = model.getProperty(WOC + "throws");
+    /*
+    public static Resource getUnknownType() {
+        return model.getResource(baseURI + "Unknown");
+    }*/
 
+    public static Resource getClassIndividual() {
+        return model.getResource(baseURI + "Class");
+    }
+
+    public static Resource getInterfaceIndividual() {
+        return model.getResource(baseURI + "Interface");
+    }
+
+    public static Resource getEnumIndividual () {
+        return model.getProperty(baseURI + "Enum");
+    }
+
+<<<<<<< Updated upstream
     public static final Property IS_NESTED_IN_PROPERTY = model.getProperty(WOC + "nestedIn");
+=======
+    public static Resource getMethodIndividual() {
+        return model.getResource(baseURI + "Method");
+    }
+>>>>>>> Stashed changes
 
-    public static final Property MODIFIER_PROPERTY = model.getProperty(WOC + "modifier");
+    public static Resource getConstructorIndividual() {
+        return model.getResource(baseURI + "Constructor");
+    }
 
-    public static final Property VISIBILITY_PROPERTY = model.getProperty(WOC + "visibility");
+    public static Property getPackageIndividual() {
+        return model.getProperty(baseURI + "Package");
+    }
 
-    public static final Property REQUESTS_PROPERTY = model.getProperty(WOC + "requests");
+    public static Property getAnnotationIndividual() {
+        return model.getProperty(baseURI + "Annotation");
+    }
 
-    public static final Property EXTENDS_PROPERTY = model.getProperty(WOC + "extends");
+    public static Property getExtendsProperty() {
+        return model.getProperty(baseURI + "extends");
+    }
 
-    public static final Property IMPLEMENTS_PROPERTY = model.getProperty(WOC + "implements");
+    public static Property getImplementsProperty() {
+        return model.getProperty(baseURI + "implements");
+    }
 
-    public static final Property SUPER_PROPERTY = model.getProperty(WOC + "super");
+    public static Property getGenericProperty() {
+        return model.getProperty(baseURI + "generic");
+    }
 
-    public static final Property PACKAGE_OF_PROPERTY = model.getProperty(WOC + "packageOf");
+    public static Property getGenericPositionProperty() {
+        return model.getProperty(baseURI + "generic_position");
+    }
+/*
+    public static Property getInvokesProperty() {
+        return model.getProperty(baseURI + "Invokes");
+    }*/
 
-    public static final Property ARRAY_OF_PROPERTY = model.getProperty(WOC + "arrayOf");
+    public static Property getPackageProperty() {
+        return model.getProperty(baseURI + "package");
+    }
 
-    public static final Property DIMENSIONS_PROPERTY = model.getProperty(WOC + "dimensions");
+    public static Property getPublicProperty() {
+        return model.getProperty(baseURI + "Public");
+    }
 
-    public static final Property FORMAL_TYPE_PARAMETER_PROPERTY = model.getProperty(WOC + "formalTypeParameter");
+    public static Property getPrivateProperty() {
+        return model.getProperty(baseURI + "Private");
+    }
 
-    public static final Property ACTUAL_TYPE_ARGUMENT_PROPERTY = model.getProperty(WOC + "actualTypeArgument");
+    public static Property getProtectedProperty() {
+        return model.getProperty(baseURI + "Protected");
+    }
 
-    public static final Property RAW_TYPE_PROPERTY = model.getProperty(WOC + "rawType");
+    public static Property getDefaultProperty() {
+        return model.getProperty(baseURI + "Default");
+    }
 
-    public static final Property ANNOTATION_PROPERTY = model.getProperty(WOC + "annotation");
+    public static Property getAbstractProperty() {
+        return model.getProperty(baseURI + "Abstract");
+    }
 
-    public static final Property OVERRIDES_PROPERTY = model.getProperty(WOC + "overrides");
+    public static Property getFinalProperty() {
+        return model.getProperty(baseURI + "Final");
+    }
 
+<<<<<<< Updated upstream
+=======
+    public static Property getStaticProperty() {
+        return model.getProperty(baseURI + "Static");
+    }
 
-    public static final Resource PUBLIC_INDIVIDUAL = model.getResource(WOC + "Public");
+    public static Property getSynchronizedProperty() {
+        return model.getProperty(baseURI + "Synchronized");
+    }
+>>>>>>> Stashed changes
 
-    public static final Resource PRIVATE_INDIVIDUAL = model.getResource(WOC + "Private");
+    public static Property getVolatileProperty() {
+        return model.getProperty(baseURI + "Volatile");
+    }
 
-    public static final Resource PROTECTED_INDIVIDUAL = model.getResource(WOC + "Protected");
+    public static Property getModifierProperty() {
+        return model.getProperty(baseURI + "has_modifier");
+    }
 
-    public static final Resource DEFAULT_INDIVIDUAL = model.getResource(WOC + "Default");
+    public static Property getEncapsulationProperty() {
+        return model.getProperty(baseURI + "encapsulation");
+    }
 
-    public static final Resource ABSTRACT_INDIVIDUAL = model.getResource(WOC + "Abstract");
+    public static Property getRequestsProperty() {
+        return model.getProperty(baseURI + "requests");
+    }
 
-    public static final Resource FINAL_INDIVIDUAL = model.getResource(WOC + "Final");
+    public static Resource getFieldClass() {
+        return  model.getProperty(baseURI + "Field");
+    }
 
-    public static final Resource STATIC_INDIVIDUAL = model.getResource(WOC + "Static");
+    public static Resource getLocalVariableClass() {
+        return model.getProperty(baseURI + "Variable");
+    }
 
-    public static final Resource SYNCHRONIZED_INDIVIDUAL = model.getResource(WOC + "Synchronized");
+    public static Property getThrowsProperty() {
+        return model.getProperty(baseURI + "throws");
+    }
 
-    public static final Resource VOLATILE_INDIVIDUAL = model.getResource(WOC + "Volatile");
+    /*public static Resource getAnnotationTypeIndividual () {
+        return model.getProperty(baseURI + "AnnotationType");
+    }*/
 
+    public static Resource getLambdaIndividual () {
+        return model.getResource(baseURI + "Lambda");
+    }
+/*
+    public static Property getLambdaImplementingProperty () {
+        return model.getProperty(baseURI + "lambda_implementing");
+    }*/
+
+    public static String getBaseURI() {
+        return baseURI;
+    }
 }
 

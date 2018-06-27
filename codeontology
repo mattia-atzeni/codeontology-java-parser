@@ -1,4 +1,5 @@
 #! /bin/bash
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 java -cp target/codeontology-1.0-SNAPSHOT-jar-with-dependencies.jar -d64 -Xms2G -Xmx4G org.codeontology.CodeOntology $@
 =======
@@ -12,4 +13,8 @@ java -cp target/codeontology-1.0-SNAPSHOT-jar-with-dependencies.jar -Xmx3036M sp
 >>>>>>> Stashed changes
 =======
 >>>>>>> 76e8274... fix null type for parameters
+>>>>>>> Stashed changes
+=======
+rm result.nt
+java -cp target/codeontology-1.0-SNAPSHOT-jar-with-dependencies.jar -Xmx3036M spoon.Launcher -p org.codeontology.SourceProcessor $@
 >>>>>>> Stashed changes
