@@ -23,6 +23,7 @@ public class CodeOntology {
     public static void main(String[] args) {
 <<<<<<< Updated upstream
         codeOntology = new CodeOntology(args);
+<<<<<<< Updated upstream
 <<<<<<< HEAD
         codeOntology.processSources();
         codeOntology.processJars();
@@ -36,6 +37,11 @@ public class CodeOntology {
             codeOntology.handleFailure(e);
         }
 >>>>>>> master
+=======
+        codeOntology.processSources();
+        codeOntology.processJars();
+        codeOntology.postCompletionTasks();
+>>>>>>> Stashed changes
         System.exit(status);
     }
 
@@ -55,6 +61,7 @@ public class CodeOntology {
         }
     }
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     public void handleFailure(Exception e) {
         System.out.println("It was a good plan that went awry.");
@@ -66,12 +73,16 @@ public class CodeOntology {
                 e.printStackTrace();
 =======
     public void handleFailure(Throwable t) {
+=======
+    public void handleFailure(Exception e) {
+>>>>>>> Stashed changes
         System.out.println("It was a good plan that went awry.");
-        if (t != null) {
-            if (t.getMessage() != null) {
-                System.out.println(t.getMessage());
+        if (e != null) {
+            if (e.getMessage() != null) {
+                System.out.println(e.getMessage());
             }
             if (codeOntology.getArguments().stackTraceMode()) {
+<<<<<<< Updated upstream
                 t.printStackTrace();
 >>>>>>> master
 =======
@@ -85,6 +96,9 @@ public class CodeOntology {
             System.out.println("Sorry, something went awry.");
             if (e.getMessage() != null) {
                 System.out.println(e.getMessage());
+=======
+                e.printStackTrace();
+>>>>>>> Stashed changes
             }
             if (launcher.getArguments().stackTraceMode()) {
                 e.printStackTrace();

@@ -1,10 +1,14 @@
 #!/bin/bash
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 repositories=$(ls $1 | sort -R | tail -30)
 =======
 repositories=$(ls $1)
 >>>>>>> master
+=======
+repositories=$(ls $1 | sort -R | tail -30)
+>>>>>>> Stashed changes
 
 if ! [ -e output ]; then
 	mkdir output

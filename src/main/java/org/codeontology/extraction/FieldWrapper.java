@@ -42,11 +42,15 @@ public class FieldWrapper extends Wrapper<CtField<?>> {
         } else {
             try {
                 return Modifier.asList(((CtFieldReference<?>) getReference()).getModifiers());
+<<<<<<< Updated upstream
 <<<<<<< HEAD
             } catch (NoClassDefFoundError e) {
 =======
             } catch (Exception | Error e) {
 >>>>>>> master
+=======
+            } catch (NoClassDefFoundError e) {
+>>>>>>> Stashed changes
                 return new ArrayList<>();
             }
         }

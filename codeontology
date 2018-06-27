@@ -4,4 +4,8 @@ java -cp target/codeontology-1.0-SNAPSHOT-jar-with-dependencies.jar -d64 -Xms2G 
 =======
 rm result.nt
 java -cp target/codeontology-1.0-SNAPSHOT-jar-with-dependencies.jar -Xmx3036M spoon.Launcher -p org.codeontology.SourceProcessor $@
+<<<<<<< Updated upstream
 >>>>>>> 03b38bb... fix null type for parameters
+=======
+>>>>>>> 76e8274... fix null type for parameters
+>>>>>>> Stashed changes
