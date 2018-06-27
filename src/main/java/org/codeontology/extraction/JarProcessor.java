@@ -1,48 +1,45 @@
+/*
+Copyright 2017 Mattia Atzeni, Maurizio Atzori
+
+This file is part of CodeOntology.
+
+CodeOntology is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+CodeOntology is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with CodeOntology.  If not, see <http://www.gnu.org/licenses/>
+*/
+
 package org.codeontology.extraction;
 
 import org.codeontology.CodeOntology;
-import org.codeontology.buildsystems.ClasspathLoader;
-import spoon.reflect.reference.CtPackageReference;
+import org.codeontology.build.ClasspathLoader;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.*;
-import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class JarProcessor {
     private JarFile jarFile;
-    private Map<Package, Set<Class<?>>> map;
     private PrintStream systemErr;
 
     public JarProcessor(String path) {
         try {
-            this.jarFile = new JarFile(path);
-            ClasspathLoader.getInstance().load(path);
-            systemErr = System.err;
-<<<<<<< HEAD
-        } catch (Exception e) {
-=======
-<<<<<<< HEAD
-        } catch (Exception e) {
-=======
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-        } catch (Exception e) {
-=======
+            if (new File(path).exists()) {
+                this.jarFile = new JarFile(path);
+                ClasspathLoader.getInstance().load(path);
+                systemErr = System.err;
+            }
         } catch (Exception | Error e) {
->>>>>>> master
-=======
-        } catch (Exception e) {
->>>>>>> Stashed changes
-=======
-        } catch (Exception e) {
->>>>>>> Stashed changes
->>>>>>> master
->>>>>>> master
             CodeOntology.showWarning("Could not access file " + path);
         }
     }
@@ -55,86 +52,22 @@ public class JarProcessor {
         try {
             try {
                 hideMessages();
-                buildMap();
-                extractAllTriples();
+                EntityFactory.getInstance().wrap(jarFile).extract();
             } finally {
                 System.setErr(systemErr);
             }
-<<<<<<< HEAD
-        } catch (Exception e) {
-=======
-<<<<<<< HEAD
-        } catch (Exception e) {
-=======
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-        } catch (Exception e) {
-=======
         } catch (Exception | Error e) {
->>>>>>> master
-=======
-        } catch (Exception e) {
->>>>>>> Stashed changes
-=======
-        } catch (Exception e) {
->>>>>>> Stashed changes
->>>>>>> master
->>>>>>> master
             CodeOntology.getInstance().handleFailure(e);
-        }
-    }
-
-    private void buildMap() {
-        System.out.println("Analyzing file " + jarFile.getName());
-        Enumeration entries = jarFile.entries();
-        map = new HashMap<>();
-        while (entries.hasMoreElements()) {
-            JarEntry entry = (JarEntry) entries.nextElement();
-            String entryPath = entry.getName();
-            if (entryPath.endsWith(".class")) {
-                String typeName = entry.getName().replace("/", ".").substring(0, entryPath.length() - 6);
-                try {
-                    Class<?> clazz = Class.forName(typeName);
-                    Package pack = clazz.getPackage();
-                    Set<Class<?>> types = map.get(pack);
-                    if (pack != null) {
-                        if (types == null) {
-                            types = new HashSet<>();
-                        }
-                        types.add(clazz);
-                        map.put(pack, types);
-                    }
-                } catch (Throwable e) {
-                    // Cannot get a class object from this jar entry
-                    // we just skip this entry
-                }
-            }
         }
     }
 
     private void hideMessages() {
         PrintStream tmpErr = new PrintStream(new OutputStream() {
             @Override
-            public void write(int b) throws IOException {
+            public void write(int i) throws IOException {
 
             }
         });
         System.setErr(tmpErr);
-    }
-
-
-    private void extractAllTriples() {
-        System.out.println("Running on " + jarFile.getName());
-        Set<Package> packages = map.keySet();
-        for (Package pack : packages) {
-            CtPackageReference packageReference = ReflectionFactory.getInstance().createPackageReference(pack);
-            PackageWrapper wrapper = WrapperFactory.getInstance().wrap(packageReference);
-            wrapper.setTypes(map.get(pack));
-            wrapper.extract();
-        }
-        RDFLogger.getInstance().writeRDF();
-        System.out.println("Triples extracted successfully.");
-    
     }
 }

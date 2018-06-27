@@ -1,16 +1,25 @@
+/*
+Copyright 2017 Mattia Atzeni, Maurizio Atzori
+
+This file is part of CodeOntology.
+
+CodeOntology is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+CodeOntology is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with CodeOntology.  If not, see <http://www.gnu.org/licenses/>
+*/
+
 package org.codeontology.extraction;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-<<<<<<< HEAD
-import com.hp.hpl.jena.rdf.model.Statement;
-=======
-<<<<<<< HEAD
-import com.hp.hpl.jena.rdf.model.Statement;
-=======
->>>>>>> master
->>>>>>> master
+import com.hp.hpl.jena.rdf.model.*;
 import org.codeontology.Ontology;
 
 import java.io.BufferedWriter;
@@ -19,25 +28,23 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class RDFLogger {
-    private Model model = Ontology.getModel();
-    private String outputFile = "triples.nt";
-    private int counter = 0;
-    private static RDFLogger instance = new RDFLogger();
-<<<<<<< HEAD
+    private Model model;
+    private String outputFile;
+    private int counter;
+    private static RDFLogger instance;
+
     public static final int MAX_SIZE = 10000;
-=======
-<<<<<<< HEAD
-    public static final int MAX_SIZE = 10000;
-=======
-    public static final int LIMIT = 100000;
->>>>>>> master
->>>>>>> master
 
     private RDFLogger() {
-
+        model = Ontology.getModel();
+        outputFile = "triples.nt";
+        counter = 0;
     }
 
     public static RDFLogger getInstance() {
+        if (instance == null) {
+            instance = new RDFLogger();
+        }
         return instance;
     }
 
@@ -51,36 +58,18 @@ public class RDFLogger {
 
     public void writeRDF() {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
-<<<<<<< HEAD
             model.write(writer, "N-TRIPLE");
         } catch (IOException e) {
             System.out.println("Cannot write triples.");
-=======
-<<<<<<< HEAD
-            model.write(writer, "N-TRIPLE");
-        } catch (IOException e) {
-            System.out.println("Cannot write triples.");
-=======
-            getModel().write(writer, "N-TRIPLE");
-            model = Ontology.getModel();
-            counter = 0;
-        } catch (IOException e) {
-            System.out.println("Unable to write triples");
->>>>>>> master
->>>>>>> master
             System.exit(-1);
         }
     }
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> master
-    public void addTriple(Wrapper<?> subject, Property property, Wrapper object) {
+    public void addTriple(Entity<?> subject, Property property, Entity object) {
         addTriple(subject, property, object.getResource());
     }
 
-    public void addTriple(Wrapper<?> subject, Property property, RDFNode object) {
+    public void addTriple(Entity<?> subject, Property property, RDFNode object) {
         if (property != null && object != null) {
             Statement triple = model.createStatement(subject.getResource(), property, object);
             model.add(triple);
@@ -93,27 +82,7 @@ public class RDFLogger {
     }
 
     private void free() {
-        model = Ontology.getModel();
+        model = ModelFactory.createDefaultModel();
         counter = 0;
     }
-<<<<<<< HEAD
-=======
-=======
-    public void addTriple(Wrapper subject, Property property, Wrapper object) {
-        addTriple(subject, property, object.getResource());
-    }
-
-    public void addTriple(Wrapper subject, Property property, RDFNode object) {
-        if (property != null && object != null) {
-            model.add(model.createStatement(subject.getResource(), property, object));
-            counter++;
-            if (counter >= LIMIT) {
-                writeRDF();
-            }
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
->>>>>>> master
->>>>>>> master
 }

@@ -1,17 +1,26 @@
+/*
+Copyright 2017 Mattia Atzeni, Maurizio Atzori
+
+This file is part of CodeOntology.
+
+CodeOntology is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+CodeOntology is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with CodeOntology.  If not, see <http://www.gnu.org/licenses/>
+*/
+
 package org.codeontology.extraction;
 
 import spoon.reflect.factory.Factory;
-<<<<<<< HEAD
 import spoon.reflect.reference.*;
-=======
-<<<<<<< HEAD
-import spoon.reflect.reference.*;
-=======
-import spoon.reflect.reference.CtExecutableReference;
-import spoon.reflect.reference.CtTypeParameterReference;
-import spoon.reflect.reference.CtTypeReference;
->>>>>>> master
->>>>>>> master
 
 import java.lang.reflect.*;
 import java.util.ArrayList;
@@ -38,7 +47,6 @@ public class ReflectionFactory {
     }
 
     public CtTypeReference<?> createParameterizedTypeReference(ParameterizedType parameterizedType) {
-
         Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
         Type rawType = parameterizedType.getRawType();
         CtTypeReference<?> reference;
@@ -137,10 +145,6 @@ public class ReflectionFactory {
     }
 
     public Executable createActualExecutable(CtExecutableReference<?> executableReference) {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> master
         Executable executable = null;
         Class<?> declaringClass;
 
@@ -189,52 +193,6 @@ public class ReflectionFactory {
                         }
                     }
                 }
-<<<<<<< HEAD
-=======
-=======
-
-        Executable executable = executableReference.getActualMethod();
-
-        if (executable == null) {
-            executable = executableReference.getActualConstructor();
-        }
-
-        if (executable == null) {
-            try {
-                Class<?> declaringClass = Class.forName(executableReference.getDeclaringType().getQualifiedName());
-
-                Executable[] executables = declaringClass.getDeclaredMethods();
-                if (executableReference.isConstructor()) {
-                    executables = declaringClass.getDeclaredConstructors();
-                }
-
-                for (Executable current : executables) {
-                    if (current.getName().equals(executableReference.getSimpleName()) || current instanceof Constructor) {
-                        if (current.getParameterCount() == executableReference.getParameters().size()) {
-                            List<CtTypeReference<?>> parameters = executableReference.getParameters();
-                            Class<?>[] classes = new Class<?>[parameters.size()];
-                            for (int i = 0; i < parameters.size(); i++) {
-                                classes[i] = parameters.get(i).getActualClass();
-                            }
-
-                            boolean acc = true;
-
-                            Class<?>[] parameterTypes = current.getParameterTypes();
-                            for (int i = 0; i < classes.length && acc; i++) {
-                                acc = classes[i].isAssignableFrom(parameterTypes[i]);
-                            }
-
-                            if (acc) {
-                                executable = current;
-                                break;
-                            }
-                        }
-                    }
-                }
-            } catch (ClassNotFoundException | NoSuchMethodError e) {
-                throw new RuntimeException(e);
->>>>>>> master
->>>>>>> master
             }
         }
 
@@ -242,10 +200,6 @@ public class ReflectionFactory {
     }
 
     public CtTypeReference<?> createTypeReference(Class<?> clazz) {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> master
         return getParent().Class().createReference(clazz);
     }
 
@@ -263,12 +217,6 @@ public class ReflectionFactory {
 
     public CtFieldReference<?> createField(Field field) {
         return getParent().Field().createReference(field);
-<<<<<<< HEAD
-=======
-=======
-        return getParent().Type().createReference(clazz);
->>>>>>> master
->>>>>>> master
     }
 
     public void setParent(Factory parent) {

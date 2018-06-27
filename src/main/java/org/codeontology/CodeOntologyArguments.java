@@ -1,8 +1,28 @@
+/*
+Copyright 2017 Mattia Atzeni, Maurizio Atzori
+
+This file is part of CodeOntology.
+
+CodeOntology is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+CodeOntology is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with CodeOntology.  If not, see <http://www.gnu.org/licenses/>
+*/
+
 package org.codeontology;
 
 import com.martiansoftware.jsap.*;
 
 import java.io.File;
+import java.util.Formatter;
 
 public class CodeOntologyArguments {
 
@@ -14,7 +34,7 @@ public class CodeOntologyArguments {
 
     public static final String CLASSPATH_LONG = "classpath";
 
-    public static final String ND = "nd";
+    public static final String DO_NOT_DOWNLOAD_LONG = "do-not-download";
 
     public static final String VERBOSE_LONG = "verbose";
     public static final char VERBOSE_SHORT = 'v';
@@ -24,33 +44,31 @@ public class CodeOntologyArguments {
 
     public static final String HELP_LONG = "help";
     public static final char HELP_SHORT = 'h';
-<<<<<<< HEAD
 
     public static final String SHUTDOWN_LONG = "shutdown";
 
     public static final String JAR_INPUT_LONG = "jar";
 
-    public static final String EXPLORE_DEPENDENCIES_LONG = "explore-dependencies";
+    public static final String DEPENDENCIES_LONG = "dependencies";
+    public static final char DEPENDENCIES_SHORT = 'd';
 
     public static final String DO_NOT_EXTRACT_LONG = "do-not-extract";
 
-    public static final String CLEAN_LONG = "clean";
-=======
->>>>>>> master
+    public static final String FORCE_LONG = "force";
+    public static final char FORCE_SHORT = 'f';
 
-    public static final String SHUTDOWN_LONG = "shutdown";
+    public static final String PROJECT_STRUCTURE_LONG = "project";
+    public static final char PROJECT_STRUCTURE_SHORT = 'p';
 
-<<<<<<< HEAD
-    public static final String JAR_INPUT_LONG = "jar";
+    public static final String STATEMENTS_LONG = "statements";
+    public static final char STATEMENTS_SHORT = 's';
 
-    public static final String EXPLORE_DEPENDENCIES_LONG = "explore-dependencies";
+    public static final String EXPRESSIONS_LONG = "expressions";
+    public static final char EXPRESSIONS_SHORT = 'e';
 
-    public static final String DO_NOT_EXTRACT_LONG = "do-not-extract";
+    // public static final String GENERICS_LONG = "generics";
+    // public static final char GENERICS_SHORT = 'g';
 
-    public static final String CLEAN_LONG = "clean";
-
-=======
->>>>>>> master
     private JSAP jsap;
     private JSAPResult result;
 
@@ -69,13 +87,6 @@ public class CodeOntologyArguments {
         option.setShortFlag(INPUT_SHORT);
         option.setLongFlag(INPUT_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-        option.setRequired(true);
->>>>>>> master
->>>>>>> master
         option.setHelp("Path to source files.");
         jsap.registerParameter(option);
 
@@ -88,7 +99,6 @@ public class CodeOntologyArguments {
         option.setHelp("Output file name.");
         jsap.registerParameter(option);
 
-<<<<<<< HEAD
         option = new FlaggedOption(JAR_INPUT_LONG);
         option.setLongFlag(JAR_INPUT_LONG);
         option.setStringParser(JSAP.STRING_PARSER);
@@ -101,31 +111,10 @@ public class CodeOntologyArguments {
         option.setStringParser(JSAP.STRING_PARSER);
         option.setRequired(false);
         option.setHelp("Specifies a list of directories and JAR files separated by colons (:) to search for class files.");
-=======
-<<<<<<< HEAD
-        option = new FlaggedOption(JAR_INPUT_LONG);
-        option.setLongFlag(JAR_INPUT_LONG);
-        option.setStringParser(JSAP.STRING_PARSER);
-        option.setRequired(false);
-        option.setHelp("Path to a jar input file");
         jsap.registerParameter(option);
 
-=======
->>>>>>> master
-        option = new FlaggedOption(CLASSPATH_LONG);
-        option.setLongFlag(CLASSPATH_LONG);
-        option.setStringParser(JSAP.STRING_PARSER);
-        option.setRequired(false);
-<<<<<<< HEAD
-        option.setHelp("Specifies a list of directories and JAR files separated by colons (:) to search for class files.");
-=======
-        option.setHelp("Specifies a list of directories, JAR files and classes separated by colons (:) to search for class files.");
->>>>>>> master
->>>>>>> master
-        jsap.registerParameter(option);
-
-        flag = new Switch(ND);
-        flag.setLongFlag(ND);
+        flag = new Switch(DO_NOT_DOWNLOAD_LONG);
+        flag.setLongFlag(DO_NOT_DOWNLOAD_LONG);
         flag.setDefault("false");
         flag.setHelp("Do not download dependencies.");
         jsap.registerParameter(flag);
@@ -141,63 +130,79 @@ public class CodeOntologyArguments {
         flag.setLongFlag(STACKTRACE_LONG);
         flag.setShortFlag(STACKTRACE_SHORT);
         flag.setDefault("false");
-        flag.setHelp("Prints stack trace for exceptions.");
+        flag.setHelp("Print stack trace for exceptions.");
         jsap.registerParameter(flag);
 
         flag = new Switch(HELP_LONG);
         flag.setLongFlag(HELP_LONG);
         flag.setShortFlag(HELP_SHORT);
         flag.setDefault("false");
-        flag.setHelp("Prints this help message.");
+        flag.setHelp("Print this help message.");
         jsap.registerParameter(flag);
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> master
-        flag = new Switch(EXPLORE_DEPENDENCIES_LONG);
-        flag.setLongFlag(EXPLORE_DEPENDENCIES_LONG);
+        flag = new Switch(DEPENDENCIES_LONG);
+        flag.setLongFlag(DEPENDENCIES_LONG);
+        flag.setShortFlag(DEPENDENCIES_SHORT);
         flag.setDefault("false");
         flag.setHelp("Explore jar files in classpath");
         jsap.registerParameter(flag);
 
-<<<<<<< HEAD
-=======
-=======
->>>>>>> master
->>>>>>> master
         flag = new Switch(SHUTDOWN_LONG);
         flag.setLongFlag(SHUTDOWN_LONG);
         flag.setDefault("false");
-        flag.setHelp("Shutdown after complete");
+        flag.setHelp("Shutdown after completing extraction");
         jsap.registerParameter(flag);
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> master
         flag = new Switch(DO_NOT_EXTRACT_LONG);
         flag.setLongFlag(DO_NOT_EXTRACT_LONG);
         flag.setDefault("false");
         flag.setHelp("Do not extract triples, just download dependencies");
         jsap.registerParameter(flag);
 
-        flag = new Switch(CLEAN_LONG);
-        flag.setLongFlag(CLEAN_LONG);
+        flag = new Switch(FORCE_LONG);
+        flag.setLongFlag(FORCE_LONG);
+        flag.setShortFlag(FORCE_SHORT);
         flag.setDefault("false");
-        flag.setHelp("Remove tests if compilation fails.");
+        flag.setHelp("Ignore files that prevent the model from being built.");
         jsap.registerParameter(flag);
-<<<<<<< HEAD
-=======
-=======
 
->>>>>>> master
->>>>>>> master
+        flag = new Switch(PROJECT_STRUCTURE_LONG);
+        flag.setLongFlag(PROJECT_STRUCTURE_LONG);
+        flag.setShortFlag(PROJECT_STRUCTURE_SHORT);
+        flag.setDefault("false");
+        flag.setHelp("Extract project structure");
+        jsap.registerParameter(flag);
+
+        flag = new Switch(STATEMENTS_LONG);
+        flag.setLongFlag(STATEMENTS_LONG);
+        flag.setShortFlag(STATEMENTS_SHORT);
+        flag.setDefault("false");
+        flag.setHelp("Process all statements");
+        jsap.registerParameter(flag);
+
+        flag = new Switch(EXPRESSIONS_LONG);
+        flag.setLongFlag(EXPRESSIONS_LONG);
+        flag.setShortFlag(EXPRESSIONS_SHORT);
+        flag.setDefault("false");
+        flag.setHelp("Process all expressions");
+        jsap.registerParameter(flag);
+
+        /*flag = new Switch(GENERICS_LONG);
+        flag.setLongFlag(GENERICS_LONG);
+        flag.setShortFlag(GENERICS_SHORT);
+        flag.setDefault("false");
+        flag.setHelp("Process parameterized types");
+        jsap.registerParameter(flag);*/
 
     }
 
     public JSAPResult parseArgs(String[] args) throws JSAPException {
+
         defineArgs();
+
+        if (args == null) {
+            args = new String[0];
+        }
 
         JSAPResult arguments = jsap.parse(args);
 
@@ -229,9 +234,9 @@ public class CodeOntologyArguments {
     }
 
     private void printUsage() {
-        System.out.println("Usage:");
-        System.out.println("codeontology -i <input_folder> -o <output_file>");
-        System.out.println();
+        System.err.println("Usage:");
+        System.err.println("codeontology -i <input_folder> -o <output_file>");
+        System.err.println();
     }
 
     public String getInput() {
@@ -240,37 +245,18 @@ public class CodeOntologyArguments {
 
     public String getOutput() {
         return result.getString(OUTPUT_LONG);
-<<<<<<< HEAD
     }
 
     public boolean downloadDependencies() {
-        return !result.getBoolean(ND);
+        return !result.getBoolean(DO_NOT_DOWNLOAD_LONG);
     }
 
     public boolean verboseMode() {
-=======
-    }
-
-<<<<<<< HEAD
-    public boolean downloadDependencies() {
-        return !result.getBoolean(ND);
-    }
-
-    public boolean verboseMode() {
-=======
-    public boolean getDownloadDependenciesFlag() {
-        return !result.getBoolean(ND);
-    }
-
-    public boolean getVerboseMode() {
->>>>>>> master
->>>>>>> master
         return result.getBoolean(VERBOSE_LONG);
     }
 
     public boolean stackTraceMode() {
         return result.getBoolean(STACKTRACE_LONG);
-<<<<<<< HEAD
     }
 
     public boolean shutdownFlag() {
@@ -279,77 +265,60 @@ public class CodeOntologyArguments {
 
     public boolean doNotExtractTriples() {
         return result.getBoolean(DO_NOT_EXTRACT_LONG);
-=======
->>>>>>> master
     }
 
-<<<<<<< HEAD
-    public boolean shutdownFlag() {
-        return result.getBoolean(SHUTDOWN_LONG);
-    }
-
-    public boolean doNotExtractTriples() {
-        return result.getBoolean(DO_NOT_EXTRACT_LONG);
-    }
-
-=======
-    public boolean getShutdownFlag() {
-        return result.getBoolean(SHUTDOWN_LONG);
-    }
-
->>>>>>> master
     private String getDefaultOutput() {
-        String extension = ".nt";
-        String base = "triples";
-        final int LIMIT = 100;
+        final int MAX = 100;
 
-        String defaultName = base + extension;
-        File file = new File(defaultName);
-        int i = 1;
-        while (i < LIMIT && file.exists()) {
-            i++;
-            defaultName = base + i + extension;
+        int i = 0;
+
+        String defaultName;
+        File file;
+
+        do {
+            Formatter formatter = new Formatter();
+            formatter.format("triples%02d.nt", i);
+            defaultName = formatter.toString();
             file = new File(defaultName);
-        }
+            i++;
+        } while (i < MAX && file.exists());
 
-        if (i == LIMIT) {
+        if (i > MAX) {
             throw new RuntimeException("Specify an output file");
         }
 
         return defaultName;
     }
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> master
     public String getJarInput() {
         return result.getString(JAR_INPUT_LONG);
     }
 
     public boolean exploreJars() {
-        return result.getBoolean(EXPLORE_DEPENDENCIES_LONG);
+        return result.getBoolean(DEPENDENCIES_LONG);
     }
 
-<<<<<<< HEAD
     public String getClasspath() {
         return result.getString(CLASSPATH_LONG);
     }
 
     public boolean removeTests() {
-        return result.getBoolean(CLEAN_LONG);
-=======
-    public String getClasspath() {
-        return result.getString(CLASSPATH_LONG);
+        return result.getBoolean(FORCE_LONG);
     }
 
-    public boolean removeTests() {
-        return result.getBoolean(CLEAN_LONG);
+    public boolean extractProjectStructure() {
+        return result.getBoolean(PROJECT_STRUCTURE_LONG);
     }
-=======
-    public String getClasspath() {
-        return result.getString(CLASSPATH_LONG);
->>>>>>> master
+
+    public boolean processStatements() {
+        return result.getBoolean(STATEMENTS_LONG);
     }
->>>>>>> master
+
+    public boolean processExpressions() {
+        return result.getBoolean(EXPRESSIONS_LONG);
+    }
+
+    /* public boolean processGenerics() {
+        return result.getBoolean(GENERICS_LONG);
+    }*/
 }

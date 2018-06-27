@@ -1,26 +1,6 @@
 #!/bin/bash
 
-<<<<<<< HEAD
-repositories=$(ls $1 | sort -R | tail -30)
-=======
-<<<<<<< HEAD
-repositories=$(ls $1 | sort -R | tail -30)
-=======
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-repositories=$(ls $1 | sort -R | tail -30)
-=======
 repositories=$(ls $1)
->>>>>>> master
-=======
-repositories=$(ls $1 | sort -R | tail -30)
->>>>>>> Stashed changes
-=======
-repositories=$(ls $1 | sort -R | tail -30)
->>>>>>> Stashed changes
->>>>>>> master
->>>>>>> master
 
 if ! [ -e output ]; then
 	mkdir output
@@ -32,5 +12,5 @@ fi
 
 for repository in $repositories; do
 	echo "Running on $repository"
-	./codeontology -i $1/$repository -o triples/$repository.nt -vt --explore-dependencies --clean &> output/$repository.out
+	./codeontology -i $1/$repository -o triples/$repository.nt -fvpestd &> output/$repository.out
 done
