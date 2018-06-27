@@ -23,11 +23,15 @@ public class JarProcessor {
             ClasspathLoader.getInstance().load(path);
             systemErr = System.err;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
         } catch (Exception e) {
 =======
         } catch (Exception | Error e) {
 >>>>>>> master
+=======
+        } catch (Exception e) {
+>>>>>>> Stashed changes
 =======
         } catch (Exception e) {
 >>>>>>> Stashed changes
@@ -49,11 +53,15 @@ public class JarProcessor {
                 System.setErr(systemErr);
             }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
         } catch (Exception e) {
 =======
         } catch (Exception | Error e) {
 >>>>>>> master
+=======
+        } catch (Exception e) {
+>>>>>>> Stashed changes
 =======
         } catch (Exception e) {
 >>>>>>> Stashed changes
